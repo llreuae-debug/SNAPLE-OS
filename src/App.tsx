@@ -15,6 +15,7 @@ import { AgencyPortalModule } from './components/modules/AgencyPortalModule';
 import { OperationsFacilitiesModule } from './components/modules/OperationsFacilitiesModule';
 import { AIAgentCenter } from './components/modules/AIAgentCenter';
 import { AuditSecurityAdmin } from './components/modules/AuditSecurityAdmin';
+import { DesignSystemShowcase } from './components/modules/DesignSystemShowcase';
 
 const MainContent: React.FC = () => {
   const [currentTab, setCurrentTab] = useState<string>('dashboard');
@@ -43,6 +44,8 @@ const MainContent: React.FC = () => {
         return <AIAgentCenter />;
       case 'audit':
         return <AuditSecurityAdmin />;
+      case 'design-system':
+        return <DesignSystemShowcase />;
       default:
         return <ExecutiveDashboard onNavigate={(tab) => setCurrentTab(tab)} />;
     }

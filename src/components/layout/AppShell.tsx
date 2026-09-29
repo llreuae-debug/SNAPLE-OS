@@ -29,7 +29,8 @@ import {
   PanelLeftOpen,
   Command,
   SlidersHorizontal,
-  ChevronRight
+  ChevronRight,
+  Palette
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
@@ -85,7 +86,8 @@ export const AppShell: React.FC<AppShellProps> = ({ currentTab, onTabChange, chi
         { id: 'agencies', label: t('nav.agencies'), icon: Share2 },
         { id: 'facilities', label: t('nav.facilities'), icon: Building2 },
         { id: 'ai', label: t('nav.ai'), icon: Sparkles, highlight: true },
-        { id: 'audit', label: t('nav.audit'), icon: ShieldAlert }
+        { id: 'audit', label: t('nav.audit'), icon: ShieldAlert },
+        { id: 'design-system', label: '3D UI Kit', icon: Palette, badge: 'Design System' }
       ];
 
   const handleCompanySelect = (cid: CompanyId | 'ALL') => {
@@ -349,6 +351,20 @@ export const AppShell: React.FC<AppShellProps> = ({ currentTab, onTabChange, chi
             >
               <Globe className="w-3.5 h-3.5 text-[var(--secondary-500)]" />
               <span>{language === 'en' ? 'اردو' : 'EN'}</span>
+            </button>
+
+            {/* Design System & 3D UI Kit Quick Button */}
+            <button
+              onClick={() => onTabChange('design-system')}
+              className={`hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border text-xs font-semibold shadow-sm transition ${
+                currentTab === 'design-system'
+                  ? 'bg-[var(--accent-500)] text-white border-[var(--accent-600)]'
+                  : 'bg-[var(--bg-surface)] text-[var(--text-primary)] border-[var(--border-base)] hover:border-[var(--border-strong)]'
+              }`}
+              title="Interactive 3D UI Kit & Design System"
+            >
+              <Palette className="w-3.5 h-3.5 text-[var(--accent-500)]" />
+              <span className="hidden xl:inline">3D UI Kit</span>
             </button>
 
             {/* User Persona Switcher */}

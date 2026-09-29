@@ -362,6 +362,225 @@
   outline-offset: 2px;
 }
 
+/* ==========================================================================
+   Visual Reference Exact Soft 3D Components
+   ========================================================================== */
+
+/* 1. 3D Pastel Squircle & Pill Cards */
+.ui-3d-card-sage {
+  background: #7D9B91;
+  color: #FFFFFF;
+  border-radius: 24px;
+  box-shadow: 0 14px 28px -6px rgba(125, 155, 145, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.35), inset 0 -2px 4px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ui-3d-card-sage:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px -6px rgba(125, 155, 145, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.45);
+}
+
+.ui-3d-card-slate {
+  background: #6B878F;
+  color: #FFFFFF;
+  border-radius: 24px;
+  box-shadow: 0 14px 28px -6px rgba(107, 135, 143, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.35), inset 0 -2px 4px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ui-3d-card-slate:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px -6px rgba(107, 135, 143, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.45);
+}
+
+.ui-3d-card-mint {
+  background: #A4B9AE;
+  color: #26302F;
+  border-radius: 24px;
+  box-shadow: 0 14px 28px -6px rgba(164, 185, 174, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.5), inset 0 -2px 4px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ui-3d-card-mint:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px -6px rgba(164, 185, 174, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.6);
+}
+
+.ui-3d-card-lavender {
+  background: #A9A0C4;
+  color: #FFFFFF;
+  border-radius: 24px;
+  box-shadow: 0 14px 28px -6px rgba(169, 160, 196, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.35), inset 0 -2px 4px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ui-3d-card-lavender:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px -6px rgba(169, 160, 196, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.45);
+}
+
+.ui-3d-card-ivory {
+  background: #F4F4EE;
+  color: #26302F;
+  border-radius: 24px;
+  box-shadow: 0 14px 28px -6px rgba(38, 48, 47, 0.07), 0 4px 10px -2px rgba(38, 48, 47, 0.03), inset 0 2px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 2px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(217, 221, 216, 0.7);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dark .ui-3d-card-ivory {
+  background: #252D2A;
+  color: #F1F3EF;
+  border-color: #333D39;
+  box-shadow: 0 14px 28px -6px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* 2. Tactile Pill Buttons */
+.btn-pill-lavender {
+  background: #CDC6E5;
+  color: #4C4266;
+  border-radius: 9999px;
+  padding: 8px 20px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(169, 160, 196, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(169, 160, 196, 0.4);
+  transition: all 0.16s ease;
+}
+.btn-pill-lavender:hover {
+  background: #D9D3EE;
+  transform: translateY(-1px);
+}
+.btn-pill-lavender:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 4px rgba(76, 66, 102, 0.2);
+}
+
+.btn-pill-white {
+  background: #FFFFFF;
+  color: #26302F;
+  border-radius: 9999px;
+  padding: 8px 20px;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06), inset 0 1px 0 #FFFFFF;
+  border: 1px solid #D9DDD8;
+  transition: all 0.16s ease;
+}
+.btn-pill-white:hover {
+  background: #F8F9F7;
+  transform: translateY(-1px);
+}
+.btn-pill-white:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.btn-pill-pressed {
+  background: #5B747B;
+  color: #FFFFFF;
+  border-radius: 9999px;
+  padding: 8px 20px;
+  font-weight: 600;
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.25), 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid #4D646B;
+}
+
+.btn-pill-sage {
+  background: #849E92;
+  color: #FFFFFF;
+  border-radius: 9999px;
+  padding: 8px 20px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(125, 155, 145, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  border: 1px solid #6A877E;
+}
+
+.btn-tactile-dial {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #F4F4EE;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08), inset 0 2px 0 #FFFFFF;
+  border: 1px solid #D9DDD8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.16s ease;
+}
+.btn-tactile-dial:hover {
+  transform: scale(1.04);
+}
+.btn-tactile-dial:active {
+  transform: scale(0.96);
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 3. Illuminated Stadium / Halo Input Pill */
+.input-pill-halo {
+  background: #FFFFFF;
+  border-radius: 9999px;
+  border: 2px solid #CDC6E5;
+  box-shadow: 0 0 0 3px rgba(205, 198, 229, 0.35), inset 0 1px 2px rgba(0, 0, 0, 0.03);
+  padding: 8px 16px;
+  font-size: 13px;
+  color: #26302F;
+  outline: none;
+  transition: all 0.16s ease;
+}
+.input-pill-halo:focus {
+  border-color: #A9A0C4;
+  box-shadow: 0 0 0 5px rgba(169, 160, 196, 0.4), inset 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+.dark .input-pill-halo {
+  background: #202725;
+  color: #F1F3EF;
+  border-color: #6D638D;
+  box-shadow: 0 0 0 3px rgba(109, 99, 141, 0.35);
+}
+
+/* 4. Recessed Grooved Track with Ticks */
+.track-groove-ticks {
+  background: #3B4644;
+  border-radius: 9999px;
+  padding: 8px 14px;
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(205, 198, 229, 0.45);
+  border: 2px solid #CDC6E5;
+  color: #B4C0BC;
+}
+.dark .track-groove-ticks {
+  background: #151A19;
+  border-color: #6D638D;
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.6), 0 0 0 3px rgba(109, 99, 141, 0.35);
+}
+
+/* 5. Tactile Segmented Pill Switcher */
+.segmented-pill-container {
+  background: #E4E7E1;
+  border-radius: 9999px;
+  padding: 4px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  border: 1px solid #D1D6CE;
+  display: inline-flex;
+  gap: 4px;
+}
+.dark .segmented-pill-container {
+  background: #1B2220;
+  border-color: #2A3430;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* 6. Illustrated Empty State Squircle */
+.empty-state-squircle {
+  background: #F7F7F3;
+  border-radius: 28px;
+  box-shadow: 0 16px 36px -8px rgba(38, 48, 47, 0.08), inset 0 2px 0 #FFFFFF;
+  border: 1px solid #D9DDD8;
+  padding: 32px 24px;
+}
+.dark .empty-state-squircle {
+  background: #202725;
+  border-color: #2E3734;
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
 /* Animations */
 @keyframes fadeIn {
   from {
