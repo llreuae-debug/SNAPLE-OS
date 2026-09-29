@@ -5,7 +5,6 @@ import {
   Briefcase,
   HardHat,
   FileText,
-  Building,
   Settings,
   X,
   ArrowRight,
@@ -112,9 +111,8 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
           item.subtitle.toLowerCase().includes(query.toLowerCase()) ||
           item.category.toLowerCase().includes(query.toLowerCase())
       )
-    : allItems.slice(0, 6); // Default top shortcuts
+    : allItems.slice(0, 6);
 
-  // Group by category
   const categories = Array.from(new Set(filteredItems.map((i) => i.category)));
 
   const handleSelect = (tabId: string) => {
@@ -123,32 +121,32 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-      <div className="relative w-full max-w-xl ui-surface-elevated rounded-2xl shadow-2xl border overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 p-4 bg-black/50 backdrop-blur-md animate-fadeIn">
+      <div className="relative w-full max-w-xl ui-surface-elevated rounded-[24px] shadow-2xl border border-[var(--border-base)] overflow-hidden">
         {/* Search Bar Input */}
-        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-[var(--border-base)]">
+        <div className="flex items-center gap-3 px-5 py-4 border-b border-[var(--border-base)]">
           <Search className="w-5 h-5 text-[var(--text-muted)] shrink-0" />
           <input
             type="text"
             autoFocus
-            placeholder="Search people, leads, projects, drawings, DWR, SOPs (e.g. 'Bilal', 'GCH')..."
+            placeholder="Search records, people, leads, projects, drawings, SOPs..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="flex-1 bg-transparent border-none text-sm font-medium text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none"
           />
-          <span className="hidden sm:inline-block text-[10px] font-mono px-1.5 py-0.5 rounded bg-[var(--bg-subtle)] text-[var(--text-muted)] border border-[var(--border-subtle)]">
+          <span className="hidden sm:inline-block text-[10px] font-mono px-2 py-0.5 rounded-lg bg-[var(--bg-subtle)] text-[var(--text-muted)] border border-[var(--border-subtle)]">
             ESC
           </span>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+            className="p-1.5 rounded-xl text-[var(--text-muted)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)] transition"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Results List */}
-        <div className="max-h-[60vh] overflow-y-auto p-2 space-y-3">
+        <div className="max-h-[60vh] overflow-y-auto p-3 space-y-3">
           {filteredItems.length === 0 ? (
             <div className="p-8 text-center text-[var(--text-muted)] text-xs">
               No matching records found for "{query}".
@@ -167,11 +165,11 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                       <button
                         key={item.id}
                         onClick={() => handleSelect(item.tabId)}
-                        className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-[var(--bg-hover)] text-left transition group"
+                        className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-[var(--bg-hover)] text-left transition group"
                       >
                         <div className="flex items-center gap-3 min-w-0">
-                          <div className="w-7 h-7 rounded-lg bg-[var(--bg-subtle)] border border-[var(--border-subtle)] flex items-center justify-center text-[var(--text-secondary)] shrink-0 group-hover:text-[var(--primary-600)]">
-                            <Icon className="w-3.5 h-3.5" />
+                          <div className="w-8 h-8 rounded-xl bg-[var(--bg-subtle)] border border-[var(--border-subtle)] flex items-center justify-center text-[var(--text-secondary)] shrink-0 group-hover:text-[var(--primary-text)] group-hover:border-[var(--primary-border)] transition">
+                            <Icon className="w-4 h-4" />
                           </div>
                           <div className="min-w-0">
                             <p className="text-xs font-semibold text-[var(--text-primary)] truncate">
@@ -192,13 +190,13 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
         </div>
 
         {/* Footer shortcuts */}
-        <div className="px-4 py-2.5 bg-[var(--bg-subtle)] border-t border-[var(--border-subtle)] flex items-center justify-between text-[11px] text-[var(--text-muted)]">
+        <div className="px-5 py-3 bg-[var(--bg-subtle)] border-t border-[var(--border-subtle)] flex items-center justify-between text-[11px] text-[var(--text-muted)]">
           <div className="flex items-center gap-2">
-            <span>Navigation:</span>
-            <kbd className="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border text-[10px] font-mono">↑</kbd>
-            <kbd className="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border text-[10px] font-mono">↓</kbd>
+            <span>Navigate:</span>
+            <kbd className="px-1.5 py-0.5 rounded-md bg-[var(--bg-elevated)] border border-[var(--border-base)] text-[10px] font-mono">↑</kbd>
+            <kbd className="px-1.5 py-0.5 rounded-md bg-[var(--bg-elevated)] border border-[var(--border-base)] text-[10px] font-mono">↓</kbd>
             <span>Select:</span>
-            <kbd className="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border text-[10px] font-mono">↵</kbd>
+            <kbd className="px-1.5 py-0.5 rounded-md bg-[var(--bg-elevated)] border border-[var(--border-base)] text-[10px] font-mono">↵</kbd>
           </div>
           <span className="font-semibold text-[var(--text-secondary)]">SNAPLE Command Index</span>
         </div>

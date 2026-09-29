@@ -5,7 +5,8 @@ import {
   ShieldCheck,
   CheckCircle2,
   Database,
-  Lock
+  Lock,
+  ArrowRight
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
@@ -89,13 +90,13 @@ export const AIAgentCenter: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 animate-fadeIn">
+    <div className="space-y-6 animate-fadeIn pb-6">
       {/* Header Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-[var(--border-base)]">
+      <div className="ui-surface-elevated p-6 rounded-[24px] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <Sparkles className="w-5 h-5 text-[#818CF8]" />
-            <h1 className="text-xl font-bold text-[var(--text-primary)]">SNAPLE AI Intelligence Sentinel</h1>
+            <Sparkles className="w-5 h-5 text-[var(--accent-500)]" />
+            <h1 className="text-xl font-extrabold tracking-tight text-[var(--text-primary)]">SNAPLE AI Intelligence Sentinel</h1>
           </div>
           <p className="text-xs text-[var(--text-secondary)]">
             AI operates strictly as a permission-constrained recommendation assistant. All actions require human authorization.
@@ -103,8 +104,8 @@ export const AIAgentCenter: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="px-3 py-1 rounded-xl bg-[var(--primary-bg)] text-[var(--primary-text)] border border-[var(--primary-border)] text-xs font-semibold flex items-center gap-1.5">
-            <ShieldCheck className="w-4 h-4" />
+          <span className="px-3.5 py-1.5 rounded-full bg-[var(--primary-bg)] text-[var(--primary-text)] border border-[var(--primary-border)] text-xs font-semibold flex items-center gap-1.5 shadow-xs">
+            <ShieldCheck className="w-4 h-4 text-[var(--primary-500)]" />
             <span>ABAC Guard: {currentUser.scope.maxConfidentiality}</span>
           </span>
         </div>
@@ -114,7 +115,7 @@ export const AIAgentCenter: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Domain Agents */}
         <div className="lg:col-span-4 space-y-3">
-          <div className="ui-surface rounded-2xl p-4 space-y-3">
+          <div className="ui-card-tactile p-5 space-y-3.5">
             <h3 className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">
               Specialized Domain Agents
             </h3>
@@ -124,15 +125,15 @@ export const AIAgentCenter: React.FC = () => {
                 <button
                   key={agent.id}
                   onClick={() => setSelectedAgent(agent)}
-                  className={`w-full text-left p-3 rounded-xl border transition ${
+                  className={`w-full text-left p-3.5 rounded-2xl border transition ${
                     selectedAgent.id === agent.id
-                      ? 'bg-[var(--primary-bg)] border-[var(--primary-border)] text-[var(--text-primary)] shadow-sm'
-                      : 'ui-surface hover:bg-[var(--bg-hover)] text-[var(--text-secondary)]'
+                      ? 'bg-[var(--accent-bg)] border-[var(--accent-border)] text-[var(--text-primary)] shadow-sm'
+                      : 'bg-[var(--bg-elevated)] border-[var(--border-base)] hover:border-[var(--border-strong)] text-[var(--text-secondary)]'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs font-bold text-[var(--text-primary)]">{isRTL ? agent.nameUrdu : agent.name}</span>
-                    <span className="w-2 h-2 rounded-full bg-[#818CF8]" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-[var(--accent-500)]" />
                   </div>
                   <p className="text-[11px] text-[var(--text-muted)] line-clamp-2">{agent.role}</p>
                 </button>
@@ -144,10 +145,10 @@ export const AIAgentCenter: React.FC = () => {
         {/* Right: Query Box & Recommendations */}
         <div className="lg:col-span-8 space-y-5">
           {/* Query Box */}
-          <div className="ui-surface rounded-2xl p-5 space-y-3">
+          <div className="ui-card-tactile p-6 space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Bot className="w-4 h-4 text-[#818CF8]" />
+                <Bot className="w-4 h-4 text-[var(--accent-500)]" />
                 <h3 className="text-xs font-bold text-[var(--text-primary)]">Query {selectedAgent.name}</h3>
               </div>
               <span className="text-[10px] text-[var(--text-muted)] font-mono">
@@ -155,24 +156,24 @@ export const AIAgentCenter: React.FC = () => {
               </span>
             </div>
 
-            <form onSubmit={handleRunAgentAnalysis} className="space-y-3">
+            <form onSubmit={handleRunAgentAnalysis} className="space-y-3.5">
               <textarea
                 rows={2}
                 required
                 placeholder={`Ask ${selectedAgent.name} for audit variances, risk detection, or optimization...`}
                 value={userQuery}
                 onChange={(e) => setUserQuery(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-[var(--bg-subtle)] border border-[var(--border-base)] rounded-xl text-xs text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[#818CF8]"
+                className="w-full px-4 py-3 input-tactile text-xs text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
               />
 
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <span className="text-[11px] text-[var(--text-muted)]">
                   Grounds findings only on data your role ({currentUser.role}) is permitted to view.
                 </span>
                 <button
                   type="submit"
                   disabled={isAnalyzing}
-                  className="px-4 py-2 rounded-xl bg-[#6366F1] hover:bg-[#4F46E5] text-white font-bold text-xs shadow-sm transition flex items-center gap-2"
+                  className="btn-tactile-accent px-5 py-2.5 text-xs font-bold flex items-center justify-center gap-2 self-end sm:self-auto"
                 >
                   <Sparkles className={`w-3.5 h-3.5 ${isAnalyzing ? 'animate-spin' : ''}`} />
                   <span>{isAnalyzing ? 'Analyzing...' : 'Run Agent Analysis'}</span>
@@ -182,24 +183,24 @@ export const AIAgentCenter: React.FC = () => {
           </div>
 
           {/* Active AI Recommendations */}
-          <div className="space-y-3">
-            <h3 className="text-sm font-bold text-[var(--text-primary)]">Active Recommendations</h3>
+          <div className="space-y-3.5">
+            <h3 className="text-sm font-bold text-[var(--text-primary)] px-1">Active Recommendations</h3>
 
-            <div className="space-y-3">
+            <div className="space-y-3.5">
               {recommendations.map((rec) => (
                 <div
                   key={rec.id}
-                  className="ui-surface rounded-2xl p-5 space-y-3 border"
+                  className="ui-card-tactile p-6 space-y-4"
                 >
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-2 border-b border-[var(--border-subtle)]">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-3 border-b border-[var(--border-subtle)]">
                     <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 rounded-md bg-[var(--primary-bg)] text-[var(--primary-text)] font-extrabold text-[10px] border border-[var(--primary-border)] uppercase">
+                      <span className="px-2.5 py-0.5 rounded-full bg-[var(--accent-bg)] text-[var(--accent-text)] font-extrabold text-[10px] border border-[var(--accent-border)] uppercase">
                         AI RECOMMENDATION (NON-BINDING)
                       </span>
                       <span className="text-xs font-bold text-[var(--text-primary)]">{rec.agentName}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-[#10B981]">
+                      <span className="text-xs font-bold text-[var(--success-text)]">
                         {rec.confidenceRating}% Confidence
                       </span>
                       <StatusBadge status={rec.status} size="xs" />
@@ -207,23 +208,23 @@ export const AIAgentCenter: React.FC = () => {
                   </div>
 
                   <div>
-                    <h4 className="text-xs font-bold text-[var(--text-primary)] mb-1">{rec.findingHeadline}</h4>
-                    <p className="text-xs text-[var(--text-secondary)] leading-relaxed bg-[var(--bg-subtle)] p-3 rounded-xl">
+                    <h4 className="text-xs font-bold text-[var(--text-primary)] mb-1.5">{rec.findingHeadline}</h4>
+                    <p className="text-xs text-[var(--text-secondary)] leading-relaxed bg-[var(--bg-subtle)] p-3.5 rounded-2xl border border-[var(--border-subtle)]">
                       {rec.recommendationBody}
                     </p>
                   </div>
 
                   {/* Sources */}
-                  <div className="p-2.5 bg-[var(--bg-subtle)] rounded-xl space-y-1">
+                  <div className="p-3.5 bg-[var(--bg-subtle)] rounded-2xl space-y-1.5">
                     <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase flex items-center gap-1">
-                      <Database className="w-3 h-3 text-[#6366F1]" />
+                      <Database className="w-3 h-3 text-[var(--primary-500)]" />
                       <span>Supporting Data Sources</span>
                     </p>
-                    <div className="flex flex-wrap gap-1.5">
+                    <div className="flex flex-wrap gap-2">
                       {rec.sourceRecords.map((src, i) => (
                         <span
                           key={i}
-                          className="px-2 py-0.5 rounded bg-[var(--bg-surface)] border text-[var(--text-secondary)] text-[10px] font-mono"
+                          className="px-2.5 py-0.5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-base)] text-[var(--text-secondary)] text-[10px] font-mono shadow-xs"
                         >
                           {src.recordType}: {src.label}
                         </span>
@@ -233,20 +234,20 @@ export const AIAgentCenter: React.FC = () => {
 
                   {/* Approval Controls */}
                   {rec.status === 'PENDING_HUMAN_REVIEW' && (
-                    <div className="flex items-center justify-between pt-1 border-t border-[var(--border-subtle)] text-xs">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pt-2 border-t border-[var(--border-subtle)] text-xs">
                       <span className="text-[var(--text-muted)] italic">
                         Human verification required before action.
                       </span>
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => handleRejectRecommendation(rec.id)}
-                          className="px-3 py-1.5 rounded-xl ui-surface hover:bg-[var(--bg-hover)] text-xs text-[var(--text-secondary)] font-medium"
+                          className="btn-tactile-secondary px-3.5 py-2 text-xs font-medium"
                         >
                           Dismiss
                         </button>
                         <button
                           onClick={() => handleApproveRecommendation(rec)}
-                          className="px-4 py-1.5 rounded-xl bg-[#6366F1] hover:bg-[#4F46E5] text-white font-bold text-xs shadow-sm transition flex items-center gap-1.5"
+                          className="btn-tactile-primary px-4 py-2 text-xs font-bold flex items-center gap-1.5"
                         >
                           <Lock className="w-3.5 h-3.5" />
                           <span>Approve & Authorize (MFA)</span>
@@ -256,7 +257,7 @@ export const AIAgentCenter: React.FC = () => {
                   )}
 
                   {rec.status === 'APPROVED_BY_USER' && (
-                    <div className="text-xs text-[#10B981] font-semibold flex items-center gap-1.5 pt-1">
+                    <div className="text-xs text-[var(--success-text)] font-semibold flex items-center gap-1.5 pt-1">
                       <CheckCircle2 className="w-4 h-4" />
                       <span>Action Approved by {rec.reviewedBy} and recorded to Audit Log.</span>
                     </div>

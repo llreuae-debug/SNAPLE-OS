@@ -25,10 +25,11 @@ import {
   Moon,
   Monitor,
   Bell,
-  Plus,
   PanelLeftClose,
   PanelLeftOpen,
-  HelpCircle
+  Command,
+  SlidersHorizontal,
+  ChevronRight
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
@@ -104,322 +105,324 @@ export const AppShell: React.FC<AppShellProps> = ({ currentTab, onTabChange, chi
   };
 
   return (
-    <div className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] flex flex-col antialiased selection:bg-[#6366F1] selection:text-white">
-      {/* 1. TOP NAVIGATION BAR */}
-      <header className="sticky top-0 z-40 ui-surface border-b px-3 sm:px-5 py-2.5 flex items-center justify-between gap-3">
-        {/* Left: Logo & Company Scope Dropdown */}
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-1.5 rounded-lg text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]"
-            aria-label="Toggle navigation menu"
-          >
-            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-
-          {/* Logo Badge */}
-          <div
-            className="flex items-center gap-2.5 cursor-pointer select-none"
-            onClick={() => onTabChange('dashboard')}
-          >
-            <div className="w-8 h-8 rounded-lg bg-white dark:bg-slate-900 border border-[var(--border-base)] flex items-center justify-center p-0.5 shadow-sm overflow-hidden shrink-0">
-              <img src="/sgc-logo.png" alt="SGC Logo" className="w-full h-full object-contain" />
-            </div>
-            <div className="hidden sm:block">
-              <div className="flex items-center gap-1.5">
-                <span className="font-extrabold tracking-tight text-sm text-[var(--text-primary)]">
-                  SNAPLE-OS
-                </span>
-                <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-[var(--primary-bg)] text-[var(--primary-text)] border border-[var(--primary-border)]">
-                  v2.0
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Company Scope Selector */}
-          <div className="relative">
+    <div className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] flex flex-col antialiased selection:bg-[var(--primary-500)] selection:text-white">
+      {/* 1. FLOATING TOP NAVIGATION BAR */}
+      <div className="sticky top-0 z-40 px-3 sm:px-6 pt-3 pb-2">
+        <header className="floating-top-bar px-3 sm:px-5 py-2.5 flex items-center justify-between gap-3">
+          {/* Left: Brand Logo & Tactile Scope Dropdown */}
+          <div className="flex items-center gap-2.5 sm:gap-3.5">
             <button
-              onClick={() => {
-                setIsCompanyDropdownOpen(!isCompanyDropdownOpen);
-                setIsUserDropdownOpen(false);
-                setIsThemeDropdownOpen(false);
-                setIsNotificationsOpen(false);
-              }}
-              className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-[var(--bg-subtle)] border border-[var(--border-base)] hover:border-[var(--border-strong)] text-xs font-semibold text-[var(--text-primary)] transition"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="lg:hidden p-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-base)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition"
+              aria-label="Toggle navigation menu"
             >
-              <Layers className="w-3.5 h-3.5 text-[#6366F1]" />
-              <span className="max-w-[130px] sm:max-w-[190px] truncate">{getActiveCompanyDisplay()}</span>
-              <ChevronDown className="w-3 h-3 text-[var(--text-muted)]" />
+              {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
             </button>
 
-            {isCompanyDropdownOpen && (
-              <div className="absolute top-full mt-2 w-64 ui-surface-elevated rounded-2xl shadow-xl p-1.5 z-50 text-xs space-y-1 animate-fadeIn border">
-                <div className="px-2.5 py-1 text-[10px] uppercase font-bold text-[var(--text-muted)]">
-                  {t('app.switch_company')}
+            {/* Logo Badge */}
+            <div
+              className="flex items-center gap-2.5 cursor-pointer select-none group"
+              onClick={() => onTabChange('dashboard')}
+            >
+              <div className="w-9 h-9 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-base)] flex items-center justify-center p-1 shadow-sm group-hover:scale-105 transition shrink-0">
+                <img src="/sgc-logo.png" alt="SGC Logo" className="w-full h-full object-contain" />
+              </div>
+              <div className="hidden sm:block">
+                <div className="flex items-center gap-1.5">
+                  <span className="font-bold tracking-tight text-sm text-[var(--text-primary)]">
+                    SNAPLE-OS
+                  </span>
+                  <span className="text-[10px] font-semibold px-1.5 py-0.2 rounded-full bg-[var(--primary-bg)] text-[var(--primary-text)] border border-[var(--primary-border)]">
+                    Group OS
+                  </span>
                 </div>
-                {currentUser.scope.isGroupWide && (
-                  <button
-                    onClick={() => handleCompanySelect('ALL')}
-                    className={`w-full text-left px-3 py-2 rounded-xl flex items-center justify-between transition ${
-                      activeCompanyId === 'ALL'
-                        ? 'bg-[#6366F1] text-white font-semibold'
-                        : 'hover:bg-[var(--bg-hover)] text-[var(--text-primary)]'
-                    }`}
-                  >
-                    <span>{t('company.all')}</span>
-                    {activeCompanyId === 'ALL' && <span className="text-xs">✓</span>}
-                  </button>
-                )}
-                {availableCompanies.map((c) => (
-                  <button
-                    key={c.id}
-                    onClick={() => handleCompanySelect(c.id)}
-                    className={`w-full text-left px-3 py-2 rounded-xl flex items-center justify-between transition ${
-                      activeCompanyId === c.id
-                        ? 'bg-[#6366F1] text-white font-semibold'
-                        : 'hover:bg-[var(--bg-hover)] text-[var(--text-primary)]'
-                    }`}
-                  >
-                    <div>
-                      <p className="font-medium">{c.name}</p>
-                      <p className="text-[10px] text-[var(--text-muted)] truncate">{c.code}</p>
-                    </div>
-                    {activeCompanyId === c.id && <span className="text-xs">✓</span>}
-                  </button>
-                ))}
               </div>
-            )}
-          </div>
-        </div>
-
-        {/* Center: Global Search Pill (Cmd/Ctrl + K) */}
-        <div className="flex-1 max-w-md hidden md:block">
-          <button
-            onClick={() => setIsSearchOpen(true)}
-            className="w-full flex items-center justify-between px-3 py-1.5 rounded-xl bg-[var(--bg-subtle)] border border-[var(--border-base)] hover:border-[var(--border-strong)] text-xs text-[var(--text-muted)] transition"
-          >
-            <div className="flex items-center gap-2">
-              <Search className="w-3.5 h-3.5 text-[var(--text-muted)]" />
-              <span>Search anything in group workspace...</span>
             </div>
-            <kbd className="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] border border-[var(--border-strong)] text-[10px] font-mono text-[var(--text-secondary)]">
-              ⌘K
-            </kbd>
-          </button>
-        </div>
 
-        {/* Right: Actions, Notifications, Theme, Language, Persona */}
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          {/* Mobile Search Icon Trigger */}
-          <button
-            onClick={() => setIsSearchOpen(true)}
-            className="md:hidden p-2 rounded-xl bg-[var(--bg-subtle)] border text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-            title="Search (Cmd + K)"
-          >
-            <Search className="w-4 h-4" />
-          </button>
+            {/* Tactile Company Scope Selector */}
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setIsCompanyDropdownOpen(!isCompanyDropdownOpen);
+                  setIsUserDropdownOpen(false);
+                  setIsThemeDropdownOpen(false);
+                  setIsNotificationsOpen(false);
+                }}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-base)] hover:border-[var(--border-strong)] text-xs font-medium text-[var(--text-primary)] shadow-sm transition"
+              >
+                <Layers className="w-3.5 h-3.5 text-[var(--primary-500)]" />
+                <span className="max-w-[120px] sm:max-w-[180px] truncate">{getActiveCompanyDisplay()}</span>
+                <ChevronDown className="w-3 h-3 text-[var(--text-muted)]" />
+              </button>
 
-          {/* Offline / Sync State Indicator */}
-          <button
-            onClick={triggerManualSync}
-            title={isOnline ? t('app.online') : t('app.offline')}
-            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border text-xs font-semibold transition ${
-              !isOnline
-                ? 'bg-[var(--danger-bg)] text-[var(--danger-text)] border-[var(--danger-border)] animate-pulse'
-                : pendingQueue.length > 0
-                ? 'bg-[var(--warning-bg)] text-[var(--warning-text)] border-[var(--warning-border)]'
-                : 'bg-[var(--bg-subtle)] text-[var(--text-secondary)] border-[var(--border-base)]'
-            }`}
-          >
-            {isOnline ? (
-              <Wifi className="w-3.5 h-3.5 text-[#10B981]" />
-            ) : (
-              <WifiOff className="w-3.5 h-3.5 text-[#EF4444]" />
-            )}
-            <span className="hidden xl:inline">
-              {isSyncing
-                ? t('app.syncing')
-                : pendingQueue.length > 0
-                ? `${pendingQueue.length} ${t('app.pending_sync')}`
-                : t('app.synced')}
-            </span>
-            {pendingQueue.length > 0 && (
-              <RefreshCw className={`w-3 h-3 ${isSyncing ? 'animate-spin text-[#F59E0B]' : ''}`} />
-            )}
-          </button>
+              {isCompanyDropdownOpen && (
+                <div className="absolute top-full mt-2 w-64 ui-surface-elevated rounded-2xl shadow-xl p-1.5 z-50 text-xs space-y-1 animate-fadeIn border border-[var(--border-base)]">
+                  <div className="px-2.5 py-1 text-[10px] uppercase font-bold text-[var(--text-muted)] tracking-wider">
+                    {t('app.switch_company')}
+                  </div>
+                  {currentUser.scope.isGroupWide && (
+                    <button
+                      onClick={() => handleCompanySelect('ALL')}
+                      className={`w-full text-left px-3 py-2 rounded-xl flex items-center justify-between transition ${
+                        activeCompanyId === 'ALL'
+                          ? 'bg-[var(--primary-500)] text-white font-semibold shadow-sm'
+                          : 'hover:bg-[var(--bg-hover)] text-[var(--text-primary)]'
+                      }`}
+                    >
+                      <span>{t('company.all')}</span>
+                      {activeCompanyId === 'ALL' && <span className="text-xs">✓</span>}
+                    </button>
+                  )}
+                  {availableCompanies.map((c) => (
+                    <button
+                      key={c.id}
+                      onClick={() => handleCompanySelect(c.id)}
+                      className={`w-full text-left px-3 py-2 rounded-xl flex items-center justify-between transition ${
+                        activeCompanyId === c.id
+                          ? 'bg-[var(--primary-500)] text-white font-semibold shadow-sm'
+                          : 'hover:bg-[var(--bg-hover)] text-[var(--text-primary)]'
+                      }`}
+                    >
+                      <div>
+                        <p className="font-medium">{c.name}</p>
+                        <p className="text-[10px] opacity-75 truncate">{c.code}</p>
+                      </div>
+                      {activeCompanyId === c.id && <span className="text-xs">✓</span>}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
 
-          {/* Notification Bell with Flyout Popover */}
-          <div className="relative">
+          {/* Center: Command Search Pill */}
+          <div className="flex-1 max-w-sm hidden md:block">
             <button
-              onClick={() => {
-                setIsNotificationsOpen(!isNotificationsOpen);
-                setIsCompanyDropdownOpen(false);
-                setIsUserDropdownOpen(false);
-                setIsThemeDropdownOpen(false);
-              }}
-              className="p-2 rounded-xl bg-[var(--bg-subtle)] border border-[var(--border-base)] hover:border-[var(--border-strong)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition relative"
-              title="Notifications"
+              onClick={() => setIsSearchOpen(true)}
+              className="w-full flex items-center justify-between px-3.5 py-1.5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-base)] hover:border-[var(--border-strong)] text-xs text-[var(--text-muted)] shadow-sm transition"
             >
-              <Bell className="w-4 h-4" />
-              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#EF4444]" />
+              <div className="flex items-center gap-2">
+                <Search className="w-3.5 h-3.5 text-[var(--text-muted)]" />
+                <span className="truncate">Search records, staff, projects...</span>
+              </div>
+              <kbd className="px-1.5 py-0.5 rounded-md bg-[var(--bg-subtle)] border border-[var(--border-base)] text-[10px] font-mono text-[var(--text-muted)]">
+                ⌘K
+              </kbd>
+            </button>
+          </div>
+
+          {/* Right: Tactile Quick Controls */}
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            {/* Mobile Search Trigger */}
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="md:hidden p-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-base)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition"
+              title="Search"
+            >
+              <Search className="w-4 h-4" />
             </button>
 
-            <NotificationsFlyout
-              isOpen={isNotificationsOpen}
-              onClose={() => setIsNotificationsOpen(false)}
-              onNavigate={(tab) => onTabChange(tab)}
-            />
-          </div>
-
-          {/* Theme Switcher: Light / Dark / System */}
-          <div className="relative">
+            {/* Offline / Sync Indicator */}
             <button
-              onClick={() => {
-                setIsThemeDropdownOpen(!isThemeDropdownOpen);
-                setIsCompanyDropdownOpen(false);
-                setIsUserDropdownOpen(false);
-                setIsNotificationsOpen(false);
-              }}
-              className="p-2 rounded-xl bg-[var(--bg-subtle)] border border-[var(--border-base)] hover:border-[var(--border-strong)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition"
-              title="Switch Theme"
+              onClick={triggerManualSync}
+              title={isOnline ? t('app.online') : t('app.offline')}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border text-xs font-semibold shadow-sm transition ${
+                !isOnline
+                  ? 'bg-[var(--danger-bg)] text-[var(--danger-text)] border-[var(--danger-border)] animate-pulse'
+                  : pendingQueue.length > 0
+                  ? 'bg-[var(--warning-bg)] text-[var(--warning-text)] border-[var(--warning-border)]'
+                  : 'bg-[var(--bg-surface)] text-[var(--text-secondary)] border-[var(--border-base)]'
+              }`}
             >
-              {resolvedTheme === 'dark' ? (
-                <Moon className="w-4 h-4 text-[#A5B4FC]" />
+              {isOnline ? (
+                <Wifi className="w-3.5 h-3.5 text-[var(--success-dot)]" />
               ) : (
-                <Sun className="w-4 h-4 text-[#F59E0B]" />
+                <WifiOff className="w-3.5 h-3.5 text-[var(--danger-dot)]" />
+              )}
+              <span className="hidden xl:inline">
+                {isSyncing
+                  ? t('app.syncing')
+                  : pendingQueue.length > 0
+                  ? `${pendingQueue.length} ${t('app.pending_sync')}`
+                  : t('app.synced')}
+              </span>
+              {pendingQueue.length > 0 && (
+                <RefreshCw className={`w-3 h-3 ${isSyncing ? 'animate-spin text-[var(--warning-dot)]' : ''}`} />
               )}
             </button>
 
-            {isThemeDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-36 ui-surface-elevated rounded-2xl shadow-xl p-1.5 z-50 text-xs space-y-0.5 border animate-fadeIn">
-                <button
-                  onClick={() => {
-                    setTheme('light');
-                    setIsThemeDropdownOpen(false);
-                  }}
-                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left transition ${
-                    theme === 'light'
-                      ? 'bg-[#6366F1] text-white font-semibold'
-                      : 'hover:bg-[var(--bg-hover)] text-[var(--text-primary)]'
-                  }`}
-                >
-                  <Sun className="w-3.5 h-3.5 text-[#F59E0B]" />
-                  <span>Light</span>
-                </button>
-                <button
-                  onClick={() => {
-                    setTheme('dark');
-                    setIsThemeDropdownOpen(false);
-                  }}
-                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left transition ${
-                    theme === 'dark'
-                      ? 'bg-[#6366F1] text-white font-semibold'
-                      : 'hover:bg-[var(--bg-hover)] text-[var(--text-primary)]'
-                  }`}
-                >
-                  <Moon className="w-3.5 h-3.5 text-[#A5B4FC]" />
-                  <span>Dark</span>
-                </button>
-                <button
-                  onClick={() => {
-                    setTheme('system');
-                    setIsThemeDropdownOpen(false);
-                  }}
-                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left transition ${
-                    theme === 'system'
-                      ? 'bg-[#6366F1] text-white font-semibold'
-                      : 'hover:bg-[var(--bg-hover)] text-[var(--text-primary)]'
-                  }`}
-                >
-                  <Monitor className="w-3.5 h-3.5 text-[var(--text-muted)]" />
-                  <span>System</span>
-                </button>
-              </div>
-            )}
-          </div>
+            {/* Notification Bell with Flyout */}
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setIsNotificationsOpen(!isNotificationsOpen);
+                  setIsCompanyDropdownOpen(false);
+                  setIsUserDropdownOpen(false);
+                  setIsThemeDropdownOpen(false);
+                }}
+                className="p-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-base)] hover:border-[var(--border-strong)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] shadow-sm transition relative"
+                title="Notifications"
+              >
+                <Bell className="w-4 h-4" />
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[var(--danger-dot)] ring-2 ring-[var(--bg-surface)]" />
+              </button>
 
-          {/* Bilingual Urdu Toggle */}
-          <button
-            onClick={() => setLanguage(language === 'en' ? 'ur' : 'en')}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[var(--bg-subtle)] border border-[var(--border-base)] hover:border-[var(--border-strong)] text-xs font-semibold text-[var(--text-primary)] transition"
-            title="Toggle Language"
-          >
-            <Globe className="w-3.5 h-3.5 text-[#06B6D4]" />
-            <span>{language === 'en' ? 'اردو' : 'EN'}</span>
-          </button>
+              <NotificationsFlyout
+                isOpen={isNotificationsOpen}
+                onClose={() => setIsNotificationsOpen(false)}
+                onNavigate={(tab) => onTabChange(tab)}
+              />
+            </div>
 
-          {/* User Persona Switcher */}
-          <div className="relative">
-            <button
-              onClick={() => {
-                setIsUserDropdownOpen(!isUserDropdownOpen);
-                setIsCompanyDropdownOpen(false);
-                setIsThemeDropdownOpen(false);
-                setIsNotificationsOpen(false);
-              }}
-              className="flex items-center gap-2 p-1 sm:pl-1.5 sm:pr-2.5 rounded-xl bg-[var(--bg-subtle)] border border-[var(--border-base)] hover:border-[var(--border-strong)] text-xs transition"
-            >
-              <div className="w-7 h-7 rounded-lg bg-[#6366F1] text-white flex items-center justify-center font-bold text-xs shrink-0">
-                {currentUser.name.charAt(0)}
-              </div>
-              <div className="text-left hidden lg:block">
-                <p className="font-semibold text-xs leading-none text-[var(--text-primary)]">
-                  {currentUser.name.split(' ')[0]}
-                </p>
-                <p className="text-[10px] text-[var(--text-muted)] font-medium leading-tight">
-                  {currentUser.role}
-                </p>
-              </div>
-              <ChevronDown className="w-3 h-3 text-[var(--text-muted)] hidden sm:block" />
-            </button>
+            {/* Theme Switcher */}
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setIsThemeDropdownOpen(!isThemeDropdownOpen);
+                  setIsCompanyDropdownOpen(false);
+                  setIsUserDropdownOpen(false);
+                  setIsNotificationsOpen(false);
+                }}
+                className="p-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-base)] hover:border-[var(--border-strong)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] shadow-sm transition"
+                title="Switch Theme"
+              >
+                {resolvedTheme === 'dark' ? (
+                  <Moon className="w-4 h-4 text-[var(--accent-500)]" />
+                ) : (
+                  <Sun className="w-4 h-4 text-[var(--warning-dot)]" />
+                )}
+              </button>
 
-            {isUserDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-72 ui-surface-elevated rounded-2xl shadow-2xl p-2 z-50 text-xs space-y-1 border animate-fadeIn">
-                <div className="px-2 py-1 text-[10px] uppercase font-bold text-[var(--text-muted)]">
-                  {t('app.switch_role')}
-                </div>
-                {usersList.map((u) => (
+              {isThemeDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-36 ui-surface-elevated rounded-2xl shadow-xl p-1.5 z-50 text-xs space-y-0.5 border border-[var(--border-base)] animate-fadeIn">
                   <button
-                    key={u.id}
-                    onClick={() => handleUserSelect(u.id)}
-                    className={`w-full text-left px-3 py-2 rounded-xl flex items-center justify-between transition ${
-                      currentUser.id === u.id
-                        ? 'bg-[#6366F1] text-white font-semibold'
+                    onClick={() => {
+                      setTheme('light');
+                      setIsThemeDropdownOpen(false);
+                    }}
+                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left transition ${
+                      theme === 'light'
+                        ? 'bg-[var(--primary-500)] text-white font-semibold'
                         : 'hover:bg-[var(--bg-hover)] text-[var(--text-primary)]'
                     }`}
                   >
-                    <div>
-                      <p className="font-semibold">{u.name}</p>
-                      <p className="text-[10px] opacity-80">{u.designation} • {u.role}</p>
-                    </div>
-                    {currentUser.id === u.id && <UserCheck className="w-4 h-4" />}
+                    <Sun className="w-3.5 h-3.5 text-[var(--warning-dot)]" />
+                    <span>Light</span>
                   </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </header>
+                  <button
+                    onClick={() => {
+                      setTheme('dark');
+                      setIsThemeDropdownOpen(false);
+                    }}
+                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left transition ${
+                      theme === 'dark'
+                        ? 'bg-[var(--primary-500)] text-white font-semibold'
+                        : 'hover:bg-[var(--bg-hover)] text-[var(--text-primary)]'
+                    }`}
+                  >
+                    <Moon className="w-3.5 h-3.5 text-[var(--accent-500)]" />
+                    <span>Dark</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setTheme('system');
+                      setIsThemeDropdownOpen(false);
+                    }}
+                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left transition ${
+                      theme === 'system'
+                        ? 'bg-[var(--primary-500)] text-white font-semibold'
+                        : 'hover:bg-[var(--bg-hover)] text-[var(--text-primary)]'
+                    }`}
+                  >
+                    <Monitor className="w-3.5 h-3.5 text-[var(--text-muted)]" />
+                    <span>System</span>
+                  </button>
+                </div>
+              )}
+            </div>
 
-      {/* 2. MAIN LAYOUT (Sidebar + Content Workspace) */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Collapsible Linear/Vercel-style Desktop Sidebar */}
+            {/* Bilingual Urdu Toggle */}
+            <button
+              onClick={() => setLanguage(language === 'en' ? 'ur' : 'en')}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-base)] hover:border-[var(--border-strong)] text-xs font-semibold text-[var(--text-primary)] shadow-sm transition"
+              title="Toggle Language"
+            >
+              <Globe className="w-3.5 h-3.5 text-[var(--secondary-500)]" />
+              <span>{language === 'en' ? 'اردو' : 'EN'}</span>
+            </button>
+
+            {/* User Persona Switcher */}
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setIsUserDropdownOpen(!isUserDropdownOpen);
+                  setIsCompanyDropdownOpen(false);
+                  setIsThemeDropdownOpen(false);
+                  setIsNotificationsOpen(false);
+                }}
+                className="flex items-center gap-2 p-1 sm:pl-1.5 sm:pr-2.5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-base)] hover:border-[var(--border-strong)] text-xs shadow-sm transition"
+              >
+                <div className="w-7 h-7 rounded-xl bg-[var(--primary-bg)] text-[var(--primary-text)] border border-[var(--primary-border)] flex items-center justify-center font-bold text-xs shrink-0">
+                  {currentUser.name.charAt(0)}
+                </div>
+                <div className="text-left hidden lg:block">
+                  <p className="font-semibold text-xs leading-none text-[var(--text-primary)]">
+                    {currentUser.name.split(' ')[0]}
+                  </p>
+                  <p className="text-[10px] text-[var(--text-muted)] font-medium leading-tight">
+                    {currentUser.role}
+                  </p>
+                </div>
+                <ChevronDown className="w-3 h-3 text-[var(--text-muted)] hidden sm:block" />
+              </button>
+
+              {isUserDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-72 ui-surface-elevated rounded-2xl shadow-2xl p-2 z-50 text-xs space-y-1 border border-[var(--border-base)] animate-fadeIn">
+                  <div className="px-2 py-1 text-[10px] uppercase font-bold text-[var(--text-muted)] tracking-wider">
+                    {t('app.switch_role')}
+                  </div>
+                  {usersList.map((u) => (
+                    <button
+                      key={u.id}
+                      onClick={() => handleUserSelect(u.id)}
+                      className={`w-full text-left px-3 py-2 rounded-xl flex items-center justify-between transition ${
+                        currentUser.id === u.id
+                          ? 'bg-[var(--primary-500)] text-white font-semibold shadow-sm'
+                          : 'hover:bg-[var(--bg-hover)] text-[var(--text-primary)]'
+                      }`}
+                    >
+                      <div>
+                        <p className="font-semibold">{u.name}</p>
+                        <p className="text-[10px] opacity-80">{u.designation} • {u.role}</p>
+                      </div>
+                      {currentUser.id === u.id && <UserCheck className="w-4 h-4" />}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </header>
+      </div>
+
+      {/* 2. MAIN LAYOUT (Tactile Sidebar + Content Workspace) */}
+      <div className="flex-1 flex overflow-hidden px-3 sm:px-6 pb-4">
+        {/* Tactile Desktop Sidebar */}
         <aside
-          className={`hidden lg:flex flex-col ui-surface border-r p-2.5 shrink-0 transition-all duration-200 select-none ${
-            isSidebarCollapsed ? 'w-16' : 'w-60'
-          }`}
+          className={`hidden lg:flex flex-col ui-surface p-3 shrink-0 transition-all duration-200 select-none mr-4 ${
+            isRTL ? 'ml-4 mr-0' : ''
+          } ${isSidebarCollapsed ? 'w-18' : 'w-64'}`}
         >
-          {/* Collapse Toggle */}
-          <div className="flex items-center justify-between mb-2 px-1">
+          {/* Collapse Header */}
+          <div className="flex items-center justify-between mb-3 px-1">
             {!isSidebarCollapsed && (
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
                 Workspaces
               </span>
             )}
             <button
               onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-              className="p-1.5 rounded-lg text-[var(--text-muted)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)] mx-auto"
+              className="p-1.5 rounded-xl text-[var(--text-muted)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)] mx-auto transition"
               title={isSidebarCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
             >
               {isSidebarCollapsed ? (
@@ -431,7 +434,7 @@ export const AppShell: React.FC<AppShellProps> = ({ currentTab, onTabChange, chi
           </div>
 
           {/* Navigation Items */}
-          <nav className="space-y-1 flex-1 overflow-y-auto">
+          <nav className="space-y-1.5 flex-1 overflow-y-auto pr-1">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = currentTab === item.id;
@@ -440,23 +443,23 @@ export const AppShell: React.FC<AppShellProps> = ({ currentTab, onTabChange, chi
                   key={item.id}
                   onClick={() => onTabChange(item.id)}
                   title={isSidebarCollapsed ? item.label : undefined}
-                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition ${
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-2xl text-xs font-semibold transition ${
                     isActive
-                      ? 'bg-[#6366F1] text-white shadow-sm'
+                      ? 'btn-tactile-primary shadow-sm'
                       : item.highlight
-                      ? 'bg-[var(--primary-bg)] text-[var(--primary-text)] hover:brightness-105'
+                      ? 'bg-[var(--accent-bg)] text-[var(--accent-text)] border border-[var(--accent-border)] hover:brightness-105'
                       : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
                   } ${isSidebarCollapsed ? 'justify-center' : ''}`}
                 >
                   <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : ''}`} />
                   {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
                   {!isSidebarCollapsed && item.badge && !isActive && (
-                    <span className="ml-auto text-[10px] font-mono px-1.5 py-0.2 rounded bg-[var(--bg-subtle)] text-[var(--text-muted)]">
+                    <span className="ml-auto text-[10px] font-mono px-1.5 py-0.5 rounded-lg bg-[var(--bg-subtle)] text-[var(--text-muted)] border border-[var(--border-subtle)]">
                       {item.badge}
                     </span>
                   )}
                   {!isSidebarCollapsed && item.highlight && !isActive && (
-                    <span className="ml-auto text-[9px] uppercase font-extrabold px-1.5 py-0.5 rounded bg-[var(--primary-bg)] text-[var(--primary-text)]">
+                    <span className="ml-auto text-[9px] uppercase font-bold px-1.5 py-0.5 rounded-md bg-[var(--accent-bg)] text-[var(--accent-text)] border border-[var(--accent-border)]">
                       AI
                     </span>
                   )}
@@ -468,10 +471,10 @@ export const AppShell: React.FC<AppShellProps> = ({ currentTab, onTabChange, chi
           {/* Bottom Scope Context Info */}
           {!isSidebarCollapsed && (
             <div className="mt-auto pt-3 border-t border-[var(--border-subtle)]">
-              <div className="p-2.5 rounded-xl bg-[var(--bg-subtle)] border border-[var(--border-subtle)] text-[11px] space-y-0.5">
+              <div className="p-3 rounded-2xl bg-[var(--bg-subtle)] border border-[var(--border-subtle)] text-[11px] space-y-1">
                 <div className="flex items-center justify-between text-[10px] uppercase font-bold text-[var(--text-muted)]">
                   <span>Scope Level</span>
-                  <span className="text-[#6366F1] font-mono">{currentUser.scope.maxConfidentiality}</span>
+                  <span className="text-[var(--primary-text)] font-mono">{currentUser.scope.maxConfidentiality}</span>
                 </div>
                 <p className="font-semibold text-[var(--text-primary)] truncate">{currentUser.designation}</p>
                 <p className="text-[10px] text-[var(--text-muted)] truncate">
@@ -484,22 +487,22 @@ export const AppShell: React.FC<AppShellProps> = ({ currentTab, onTabChange, chi
 
         {/* Mobile Fullscreen Slide-out Menu */}
         {isMobileMenuOpen && (
-          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm lg:hidden flex flex-col animate-fadeIn">
-            <div className="p-4 ui-surface border-b flex items-center justify-between">
+          <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm lg:hidden flex flex-col animate-fadeIn">
+            <div className="p-4 ui-surface border-b flex items-center justify-between rounded-none">
               <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-lg bg-white dark:bg-slate-900 border border-[var(--border-base)] flex items-center justify-center p-0.5 shadow-sm overflow-hidden shrink-0">
+                <div className="w-8 h-8 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-base)] flex items-center justify-center p-1 shadow-sm overflow-hidden shrink-0">
                   <img src="/sgc-logo.png" alt="SGC Logo" className="w-full h-full object-contain" />
                 </div>
                 <span className="font-bold text-sm text-[var(--text-primary)]">SNAPLE-OS</span>
               </div>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                className="p-2 rounded-xl bg-[var(--bg-subtle)] text-[var(--text-muted)] hover:text-[var(--text-primary)]"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <div className="p-4 space-y-1.5 overflow-y-auto flex-1 bg-[var(--bg-base)]">
+            <div className="p-4 space-y-2 overflow-y-auto flex-1 bg-[var(--bg-base)]">
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = currentTab === item.id;
@@ -510,9 +513,9 @@ export const AppShell: React.FC<AppShellProps> = ({ currentTab, onTabChange, chi
                       onTabChange(item.id);
                       setIsMobileMenuOpen(false);
                     }}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition ${
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold transition ${
                       isActive
-                        ? 'bg-[#6366F1] text-white shadow'
+                        ? 'btn-tactile-primary text-white shadow'
                         : 'ui-surface hover:bg-[var(--bg-hover)] text-[var(--text-primary)]'
                     }`}
                   >
@@ -525,18 +528,18 @@ export const AppShell: React.FC<AppShellProps> = ({ currentTab, onTabChange, chi
           </div>
         )}
 
-        {/* Main Viewport Content */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 pb-20 lg:pb-8">
+        {/* Main Viewport Workspace */}
+        <main className="flex-1 overflow-y-auto pb-20 lg:pb-6 rounded-2xl">
           {children}
         </main>
       </div>
 
       {/* 3. MOBILE BOTTOM NAVIGATION (Field speed <2m workflow) */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-30 ui-surface border-t px-2 py-1.5 flex items-center justify-around">
+      <nav className="lg:hidden fixed bottom-3 left-3 right-3 z-30 floating-top-bar px-3 py-2 flex items-center justify-around">
         <button
           onClick={() => onTabChange('dashboard')}
-          className={`flex flex-col items-center gap-0.5 p-1 text-[10px] font-medium transition ${
-            currentTab === 'dashboard' ? 'text-[#6366F1] font-bold' : 'text-[var(--text-muted)]'
+          className={`flex flex-col items-center gap-1 p-1 text-[10px] font-medium transition ${
+            currentTab === 'dashboard' ? 'text-[var(--primary-text)] font-bold' : 'text-[var(--text-muted)]'
           }`}
         >
           <LayoutDashboard className="w-4 h-4" />
@@ -544,8 +547,8 @@ export const AppShell: React.FC<AppShellProps> = ({ currentTab, onTabChange, chi
         </button>
         <button
           onClick={() => onTabChange('dwr')}
-          className={`flex flex-col items-center gap-0.5 p-1 text-[10px] font-medium transition ${
-            currentTab === 'dwr' ? 'text-[#6366F1] font-bold' : 'text-[var(--text-muted)]'
+          className={`flex flex-col items-center gap-1 p-1 text-[10px] font-medium transition ${
+            currentTab === 'dwr' ? 'text-[var(--primary-text)] font-bold' : 'text-[var(--text-muted)]'
           }`}
         >
           <ClipboardList className="w-4 h-4" />
@@ -553,8 +556,8 @@ export const AppShell: React.FC<AppShellProps> = ({ currentTab, onTabChange, chi
         </button>
         <button
           onClick={() => onTabChange('attendance')}
-          className={`flex flex-col items-center gap-0.5 p-1 text-[10px] font-medium transition ${
-            currentTab === 'attendance' ? 'text-[#6366F1] font-bold' : 'text-[var(--text-muted)]'
+          className={`flex flex-col items-center gap-1 p-1 text-[10px] font-medium transition ${
+            currentTab === 'attendance' ? 'text-[var(--primary-text)] font-bold' : 'text-[var(--text-muted)]'
           }`}
         >
           <MapPin className="w-4 h-4" />
@@ -562,8 +565,8 @@ export const AppShell: React.FC<AppShellProps> = ({ currentTab, onTabChange, chi
         </button>
         <button
           onClick={() => onTabChange('projects')}
-          className={`flex flex-col items-center gap-0.5 p-1 text-[10px] font-medium transition ${
-            currentTab === 'projects' ? 'text-[#6366F1] font-bold' : 'text-[var(--text-muted)]'
+          className={`flex flex-col items-center gap-1 p-1 text-[10px] font-medium transition ${
+            currentTab === 'projects' ? 'text-[var(--primary-text)] font-bold' : 'text-[var(--text-muted)]'
           }`}
         >
           <HardHat className="w-4 h-4" />
@@ -571,8 +574,8 @@ export const AppShell: React.FC<AppShellProps> = ({ currentTab, onTabChange, chi
         </button>
         <button
           onClick={() => onTabChange('ai')}
-          className={`flex flex-col items-center gap-0.5 p-1 text-[10px] font-medium transition ${
-            currentTab === 'ai' ? 'text-[#818CF8] font-bold' : 'text-[var(--text-muted)]'
+          className={`flex flex-col items-center gap-1 p-1 text-[10px] font-medium transition ${
+            currentTab === 'ai' ? 'text-[var(--accent-text)] font-bold' : 'text-[var(--text-muted)]'
           }`}
         >
           <Sparkles className="w-4 h-4" />

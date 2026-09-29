@@ -24,17 +24,17 @@ export const StepUpModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-      <div className="relative w-full max-w-md ui-surface-elevated rounded-2xl p-6 shadow-2xl border">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-md animate-fadeIn">
+      <div className="relative w-full max-w-md ui-surface-elevated rounded-[24px] p-6 sm:p-7 shadow-2xl border border-[var(--border-base)]">
         <button
           onClick={cancelStepUpMFA}
-          className="absolute top-4 right-4 p-1.5 text-[var(--text-muted)] hover:text-[var(--text-primary)] rounded-lg hover:bg-[var(--bg-hover)]"
+          className="absolute top-4 right-4 p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] rounded-xl hover:bg-[var(--bg-hover)] transition"
         >
           <X className="w-4 h-4" />
         </button>
 
         <div className="flex items-center gap-3 mb-4">
-          <div className="p-2.5 bg-[var(--primary-bg)] border border-[var(--primary-border)] text-[#6366F1] rounded-xl">
+          <div className="p-3 bg-[var(--primary-bg)] border border-[var(--primary-border)] text-[var(--primary-text)] rounded-2xl shadow-xs">
             <ShieldCheck className="w-5 h-5" />
           </div>
           <div>
@@ -43,15 +43,15 @@ export const StepUpModal: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-[var(--bg-subtle)] border border-[var(--border-base)] rounded-xl p-3.5 mb-4 text-xs space-y-2">
-          <div className="flex items-start gap-2">
-            <AlertTriangle className="w-4 h-4 text-[#F59E0B] shrink-0 mt-0.5" />
+        <div className="bg-[var(--bg-subtle)] border border-[var(--border-base)] rounded-2xl p-4 mb-4 text-xs space-y-2">
+          <div className="flex items-start gap-2.5">
+            <AlertTriangle className="w-4 h-4 text-[var(--warning-dot)] shrink-0 mt-0.5" />
             <div>
               <strong className="text-[var(--text-primary)] block font-semibold">{stepUpData.actionTitle}</strong>
               <p className="text-[var(--text-secondary)] mt-0.5">{stepUpData.actionDescription}</p>
             </div>
           </div>
-          <div className="pt-2 border-t border-[var(--border-subtle)] flex justify-between text-[11px] text-[var(--text-muted)]">
+          <div className="pt-2.5 border-t border-[var(--border-subtle)] flex justify-between text-[11px] text-[var(--text-muted)]">
             <span>Principal:</span>
             <span className="font-semibold text-[var(--text-primary)]">{currentUser.name}</span>
           </div>
@@ -59,12 +59,14 @@ export const StepUpModal: React.FC = () => {
 
         <form onSubmit={handleVerify} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-[var(--text-secondary)] mb-1 flex items-center justify-between">
-              <span>Enter 6-Digit MFA Token</span>
-              <span className="text-[#6366F1] text-[10px] bg-[var(--primary-bg)] px-2 py-0.2 rounded border border-[var(--primary-border)] font-mono">
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="text-xs font-semibold text-[var(--text-secondary)]">
+                Enter 6-Digit MFA Token
+              </label>
+              <span className="text-[var(--primary-text)] text-[10px] bg-[var(--primary-bg)] px-2 py-0.5 rounded-full border border-[var(--primary-border)] font-mono font-bold">
                 Demo: 123456
               </span>
-            </label>
+            </div>
             <div className="relative">
               <input
                 type="text"
@@ -75,25 +77,25 @@ export const StepUpModal: React.FC = () => {
                   setError(null);
                 }}
                 placeholder="123456"
-                className="w-full text-center tracking-[0.5em] text-xl font-mono font-bold py-2.5 bg-[var(--bg-base)] border border-[var(--border-base)] rounded-xl text-[var(--text-primary)] focus:outline-none focus:border-[#6366F1]"
+                className="w-full text-center tracking-[0.5em] text-xl font-mono font-bold py-3 input-tactile text-[var(--text-primary)]"
                 autoFocus
               />
               <Lock className="w-4 h-4 text-[var(--text-muted)] absolute left-3.5 top-1/2 -translate-y-1/2" />
             </div>
-            {error && <p className="text-[#EF4444] text-xs mt-1.5">{error}</p>}
+            {error && <p className="text-[var(--danger-dot)] text-xs mt-1.5 font-medium">{error}</p>}
           </div>
 
-          <div className="flex gap-2 pt-1">
+          <div className="flex gap-2.5 pt-1">
             <button
               type="button"
               onClick={cancelStepUpMFA}
-              className="flex-1 px-4 py-2 rounded-xl ui-surface hover:bg-[var(--bg-hover)] text-xs text-[var(--text-secondary)] font-semibold transition"
+              className="btn-tactile-secondary flex-1 py-2.5 text-xs font-semibold"
             >
               {t('action.cancel')}
             </button>
             <button
               type="submit"
-              className="flex-1 px-4 py-2 rounded-xl bg-[#6366F1] hover:bg-[#4F46E5] text-white text-xs font-bold shadow-sm transition flex items-center justify-center gap-1.5"
+              className="btn-tactile-primary flex-1 py-2.5 text-xs font-bold flex items-center justify-center gap-1.5"
             >
               <ShieldCheck className="w-4 h-4" />
               <span>{t('security.verify_btn')}</span>

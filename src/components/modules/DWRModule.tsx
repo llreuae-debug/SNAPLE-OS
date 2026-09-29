@@ -10,11 +10,11 @@ import {
   Clock,
   AlertCircle,
   Send,
-  Sparkles,
-  Filter,
-  Check,
   Save,
-  Trash2
+  Trash2,
+  Check,
+  Calendar,
+  Sparkles
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
@@ -174,24 +174,24 @@ export const DWRModule: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 animate-fadeIn">
+    <div className="space-y-6 animate-fadeIn pb-6">
       {/* Top Header & Tab Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-[var(--border-base)]">
+      <div className="ui-surface-elevated p-6 rounded-[24px] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <ClipboardList className="w-5 h-5 text-[#6366F1]" />
-            <h1 className="text-xl font-bold text-[var(--text-primary)]">{t('dwr.title')}</h1>
+            <ClipboardList className="w-5 h-5 text-[var(--primary-500)]" />
+            <h1 className="text-xl font-extrabold tracking-tight text-[var(--text-primary)]">{t('dwr.title')}</h1>
           </div>
           <p className="text-xs text-[var(--text-secondary)]">{t('dwr.quick_time')}</p>
         </div>
 
-        {/* Tab Controls */}
-        <div className="flex items-center gap-1 p-1 bg-[var(--bg-subtle)] rounded-xl border border-[var(--border-base)] text-xs">
+        {/* Tactile Tab Controls */}
+        <div className="flex items-center gap-1.5 p-1 bg-[var(--bg-subtle)] rounded-2xl border border-[var(--border-base)] text-xs">
           <button
             onClick={() => setActiveTab('NEW_SUBMIT')}
-            className={`px-3 py-1.5 rounded-lg font-semibold transition ${
+            className={`px-3.5 py-1.5 rounded-xl font-semibold transition ${
               activeTab === 'NEW_SUBMIT'
-                ? 'bg-[#6366F1] text-white shadow-sm'
+                ? 'btn-tactile-primary text-white shadow-xs'
                 : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
             }`}
           >
@@ -199,22 +199,22 @@ export const DWRModule: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('REVIEW_PENDING')}
-            className={`px-3 py-1.5 rounded-lg font-semibold transition flex items-center gap-1.5 ${
+            className={`px-3.5 py-1.5 rounded-xl font-semibold transition flex items-center gap-1.5 ${
               activeTab === 'REVIEW_PENDING'
-                ? 'bg-[#6366F1] text-white shadow-sm'
+                ? 'btn-tactile-primary text-white shadow-xs'
                 : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
             }`}
           >
-            <span>Supervisor Reviews</span>
-            <span className="w-4 h-4 rounded-full bg-[#F59E0B] text-slate-950 font-black text-[9px] flex items-center justify-center">
+            <span>Reviews</span>
+            <span className="w-4 h-4 rounded-full bg-[var(--warning-dot)] text-slate-950 font-black text-[9px] flex items-center justify-center">
               {dwrList.filter((d) => d.status === 'SUBMITTED').length}
             </span>
           </button>
           <button
             onClick={() => setActiveTab('HISTORY')}
-            className={`px-3 py-1.5 rounded-lg font-semibold transition ${
+            className={`px-3.5 py-1.5 rounded-xl font-semibold transition ${
               activeTab === 'HISTORY'
-                ? 'bg-[#6366F1] text-white shadow-sm'
+                ? 'btn-tactile-primary text-white shadow-xs'
                 : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
             }`}
           >
@@ -224,39 +224,40 @@ export const DWRModule: React.FC = () => {
       </div>
 
       {submitSuccess && (
-        <div className="p-3 bg-[var(--success-bg)] border border-[var(--success-border)] text-[var(--success-text)] rounded-xl text-xs font-semibold flex items-center gap-2 animate-fadeIn">
-          <CheckCircle className="w-4 h-4 text-[#10B981]" />
+        <div className="p-4 bg-[var(--success-bg)] border border-[var(--success-border)] text-[var(--success-text)] rounded-2xl text-xs font-semibold flex items-center gap-2 animate-fadeIn shadow-sm">
+          <CheckCircle className="w-4 h-4 text-[var(--success-dot)]" />
           <span>{submitSuccess}</span>
         </div>
       )}
 
-      {/* Mode 1: Fast Entry Form */}
+      {/* Mode 1: Fast Entry Form with Soft 3D Layout */}
       {activeTab === 'NEW_SUBMIT' && (
-        <div className="ui-surface rounded-2xl p-5 sm:p-6 space-y-5">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="ui-card-tactile p-6 sm:p-7 space-y-6">
+          {/* Top Progress & Scope Banner */}
+          <div className="p-4 rounded-2xl bg-[var(--primary-bg)] border border-[var(--primary-border)] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
-              <label className="block text-xs font-semibold text-[var(--text-secondary)] mb-1">
-                Reporting Date
-              </label>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-[var(--primary-text)] uppercase tracking-wider">Today's Work Submission</span>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[var(--bg-elevated)] text-[var(--primary-text)] border border-[var(--primary-border)]">
+                  Speed: 2-5m
+                </span>
+              </div>
+              <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+                {currentUser.companyId.toUpperCase()} • {currentUser.departmentId} ({currentUser.siteId})
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
               <input
                 type="date"
                 value={workDate}
                 onChange={(e) => setWorkDate(e.target.value)}
-                className="w-full px-3 py-2 bg-[var(--bg-subtle)] border border-[var(--border-base)] rounded-xl text-xs text-[var(--text-primary)] focus:outline-none focus:border-[#6366F1]"
+                className="input-tactile px-3 py-1.5 text-xs text-[var(--text-primary)] font-semibold"
               />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-[var(--text-secondary)] mb-1">
-                Department / Scope Location
-              </label>
-              <div className="px-3 py-2 bg-[var(--bg-subtle)] border border-[var(--border-subtle)] rounded-xl text-xs text-[var(--text-secondary)]">
-                {currentUser.companyId.toUpperCase()} • {currentUser.departmentId} ({currentUser.siteId})
-              </div>
             </div>
           </div>
 
           {/* Measurable Output Items */}
-          <div className="space-y-3">
+          <div className="space-y-3.5">
             <div className="flex items-center justify-between">
               <label className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider">
                 Measurable Work Output Items (No Vague Entries)
@@ -264,7 +265,7 @@ export const DWRModule: React.FC = () => {
               <button
                 type="button"
                 onClick={handleAddItem}
-                className="text-xs text-[#6366F1] hover:underline font-semibold flex items-center gap-1"
+                className="text-xs text-[var(--primary-text)] hover:underline font-bold flex items-center gap-1"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>{t('dwr.add_item')}</span>
@@ -274,7 +275,7 @@ export const DWRModule: React.FC = () => {
             {items.map((item, idx) => (
               <div
                 key={item.id}
-                className="p-3.5 rounded-xl bg-[var(--bg-subtle)] border border-[var(--border-base)] grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-center"
+                className="p-4 rounded-2xl bg-[var(--bg-subtle)] border border-[var(--border-base)] grid grid-cols-1 sm:grid-cols-12 gap-3 items-center"
               >
                 <div className="sm:col-span-5">
                   <input
@@ -283,7 +284,7 @@ export const DWRModule: React.FC = () => {
                     placeholder="Specific output (e.g. 4th Floor Slab Pour Rebar Check)"
                     value={item.taskTitle}
                     onChange={(e) => handleUpdateItem(idx, 'taskTitle', e.target.value)}
-                    className="w-full px-3 py-2 bg-[var(--bg-surface)] border border-[var(--border-base)] rounded-xl text-xs text-[var(--text-primary)] focus:outline-none focus:border-[#6366F1]"
+                    className="w-full px-3 py-2 input-tactile text-xs text-[var(--text-primary)]"
                   />
                 </div>
                 <div className="sm:col-span-2">
@@ -294,26 +295,26 @@ export const DWRModule: React.FC = () => {
                     placeholder="Qty"
                     value={item.quantity}
                     onChange={(e) => handleUpdateItem(idx, 'quantity', Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-[var(--bg-surface)] border border-[var(--border-base)] rounded-xl text-xs text-[var(--text-primary)] focus:outline-none focus:border-[#6366F1]"
+                    className="w-full px-3 py-2 input-tactile text-xs text-[var(--text-primary)] font-semibold"
                   />
                 </div>
                 <div className="sm:col-span-2">
                   <input
                     type="text"
                     required
-                    placeholder="Unit (Cu.Ft, Calls)"
+                    placeholder="Unit (Cu.Ft, Calls, Drawings)"
                     value={item.unit}
                     onChange={(e) => handleUpdateItem(idx, 'unit', e.target.value)}
-                    className="w-full px-3 py-2 bg-[var(--bg-surface)] border border-[var(--border-base)] rounded-xl text-xs text-[var(--text-primary)] focus:outline-none focus:border-[#6366F1]"
+                    className="w-full px-3 py-2 input-tactile text-xs text-[var(--text-primary)]"
                   />
                 </div>
                 <div className="sm:col-span-2">
                   <input
                     type="text"
-                    placeholder="Notes / Grid"
+                    placeholder="Notes / Grid Ref"
                     value={item.notes}
                     onChange={(e) => handleUpdateItem(idx, 'notes', e.target.value)}
-                    className="w-full px-3 py-2 bg-[var(--bg-surface)] border border-[var(--border-base)] rounded-xl text-xs text-[var(--text-primary)] focus:outline-none focus:border-[#6366F1]"
+                    className="w-full px-3 py-2 input-tactile text-xs text-[var(--text-primary)]"
                   />
                 </div>
                 <div className="sm:col-span-1 flex justify-end">
@@ -321,7 +322,7 @@ export const DWRModule: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleRemoveItem(idx)}
-                      className="p-1.5 text-[var(--text-muted)] hover:text-[#EF4444]"
+                      className="p-2 rounded-xl text-[var(--text-muted)] hover:text-[var(--danger-dot)] hover:bg-[var(--bg-hover)] transition"
                       title="Remove item"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -332,49 +333,45 @@ export const DWRModule: React.FC = () => {
             ))}
           </div>
 
-          {/* Quick Evidence Buttons */}
-          <div className="p-3.5 rounded-xl bg-[var(--primary-bg)] border border-[var(--primary-border)] space-y-2">
-            <p className="text-[11px] font-bold text-[var(--primary-text)] uppercase tracking-wider">
+          {/* Quick Evidence Capture Pills */}
+          <div className="p-4 rounded-2xl bg-[var(--bg-subtle)] border border-[var(--border-base)] space-y-2.5">
+            <p className="text-[11px] font-bold text-[var(--text-secondary)] uppercase tracking-wider">
               Quick Evidence Capture (Field & Office)
             </p>
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2.5">
               <button
                 type="button"
                 onClick={() => setHasPhoto(!hasPhoto)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold transition ${
-                  hasPhoto
-                    ? 'bg-[#10B981] text-white border-transparent shadow-sm'
-                    : 'ui-surface text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]'
+                className={`btn-tactile-secondary px-3.5 py-2 text-xs font-semibold flex items-center gap-1.5 ${
+                  hasPhoto ? 'bg-[var(--success-bg)] text-[var(--success-text)] border-[var(--success-border)]' : ''
                 }`}
               >
-                <Camera className="w-3.5 h-3.5" />
+                <Camera className="w-3.5 h-3.5 text-[var(--primary-500)]" />
                 <span>{hasPhoto ? 'Photo Attached ✓' : t('dwr.photo_evidence')}</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setHasVoice(!hasVoice)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold transition ${
-                  hasVoice
-                    ? 'bg-[#10B981] text-white border-transparent shadow-sm'
-                    : 'ui-surface text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]'
+                className={`btn-tactile-secondary px-3.5 py-2 text-xs font-semibold flex items-center gap-1.5 ${
+                  hasVoice ? 'bg-[var(--success-bg)] text-[var(--success-text)] border-[var(--success-border)]' : ''
                 }`}
               >
-                <Mic className="w-3.5 h-3.5" />
+                <Mic className="w-3.5 h-3.5 text-[var(--accent-500)]" />
                 <span>{hasVoice ? 'Voice Note (0:24) ✓' : t('dwr.voice_evidence')}</span>
               </button>
 
               <button
                 type="button"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl ui-surface text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] border text-xs font-semibold transition"
+                className="btn-tactile-secondary px-3.5 py-2 text-xs font-semibold flex items-center gap-1.5"
               >
-                <QrCode className="w-3.5 h-3.5" />
+                <QrCode className="w-3.5 h-3.5 text-[var(--secondary-500)]" />
                 <span>{t('dwr.qr_evidence')}</span>
               </button>
             </div>
           </div>
 
-          {/* Problems & Support Fields */}
+          {/* Problems & Support Needed */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold text-[var(--text-secondary)] mb-1">
@@ -385,7 +382,7 @@ export const DWRModule: React.FC = () => {
                 placeholder="Any site blockages, material delays, or dependencies..."
                 value={problems}
                 onChange={(e) => setProblems(e.target.value)}
-                className="w-full px-3 py-2 bg-[var(--bg-subtle)] border border-[var(--border-base)] rounded-xl text-xs text-[var(--text-primary)] focus:outline-none focus:border-[#6366F1]"
+                className="w-full px-3 py-2 input-tactile text-xs text-[var(--text-primary)]"
               />
             </div>
             <div>
@@ -397,23 +394,23 @@ export const DWRModule: React.FC = () => {
                 placeholder="Specific management action or escalation required..."
                 value={supportNeeded}
                 onChange={(e) => setSupportNeeded(e.target.value)}
-                className="w-full px-3 py-2 bg-[var(--bg-subtle)] border border-[var(--border-base)] rounded-xl text-xs text-[var(--text-primary)] focus:outline-none focus:border-[#6366F1]"
+                className="w-full px-3 py-2 input-tactile text-xs text-[var(--text-primary)]"
               />
             </div>
           </div>
 
           {validationError && (
-            <div className="p-3 bg-[var(--danger-bg)] border border-[var(--danger-border)] text-[var(--danger-text)] rounded-xl text-xs font-medium flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-[#EF4444] shrink-0" />
+            <div className="p-3.5 bg-[var(--danger-bg)] border border-[var(--danger-border)] text-[var(--danger-text)] rounded-2xl text-xs font-medium flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-[var(--danger-dot)] shrink-0" />
               <span>{validationError}</span>
             </div>
           )}
 
-          <div className="flex items-center justify-end gap-2 pt-2">
+          <div className="flex items-center justify-end gap-3 pt-2">
             <button
               type="button"
               onClick={() => handleSubmitDWR(true)}
-              className="px-4 py-2.5 rounded-xl ui-surface hover:bg-[var(--bg-hover)] text-xs font-semibold text-[var(--text-secondary)] transition flex items-center gap-1.5"
+              className="btn-tactile-secondary px-4 py-2.5 text-xs font-semibold flex items-center gap-1.5"
             >
               <Save className="w-3.5 h-3.5" />
               <span>Save Draft</span>
@@ -421,7 +418,7 @@ export const DWRModule: React.FC = () => {
             <button
               type="button"
               onClick={() => handleSubmitDWR(false)}
-              className="px-5 py-2.5 rounded-xl bg-[#6366F1] hover:bg-[#4F46E5] text-white font-bold text-xs shadow-sm transition flex items-center gap-2"
+              className="btn-tactile-primary px-6 py-2.5 text-xs font-bold flex items-center gap-2 shadow-sm"
             >
               <Send className="w-3.5 h-3.5" />
               <span>{t('dwr.submit_btn')}</span>
@@ -433,7 +430,7 @@ export const DWRModule: React.FC = () => {
       {/* Mode 2: Supervisor Reviews */}
       {activeTab === 'REVIEW_PENDING' && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between px-1">
             <h3 className="text-sm font-bold text-[var(--text-primary)]">
               Pending Supervisor Verifications (24h SLA)
             </h3>
@@ -441,14 +438,14 @@ export const DWRModule: React.FC = () => {
           </div>
 
           {dwrList.filter((d) => d.status === 'SUBMITTED').length === 0 ? (
-            <div className="ui-surface rounded-2xl p-8 text-center text-[var(--text-muted)] text-xs">
+            <div className="ui-card-tactile p-10 text-center text-[var(--text-muted)] text-xs">
               All submitted DWRs have been verified. Zero backlogs.
             </div>
           ) : (
             dwrList
               .filter((d) => d.status === 'SUBMITTED')
               .map((dwr) => (
-                <div key={dwr.id} className="ui-surface rounded-2xl p-4 sm:p-5 space-y-3">
+                <div key={dwr.id} className="ui-card-tactile p-5 space-y-3.5">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <div>
                       <span className="text-xs font-bold text-[var(--text-primary)]">{dwr.employeeName}</span>
@@ -462,7 +459,7 @@ export const DWRModule: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="p-3 bg-[var(--bg-subtle)] rounded-xl space-y-1 text-xs">
+                  <div className="p-3.5 bg-[var(--bg-subtle)] rounded-2xl space-y-1.5 text-xs">
                     {dwr.items.map((it) => (
                       <div key={it.id} className="flex items-center justify-between text-[var(--text-secondary)]">
                         <span>{it.taskTitle}</span>
@@ -476,7 +473,7 @@ export const DWRModule: React.FC = () => {
                   <div className="flex justify-end pt-1">
                     <button
                       onClick={() => setReviewingDWR(dwr)}
-                      className="px-3.5 py-2 rounded-xl bg-[#6366F1] hover:bg-[#4F46E5] text-white font-semibold text-xs transition flex items-center gap-1.5"
+                      className="btn-tactile-primary px-4 py-2 text-xs font-semibold flex items-center gap-1.5"
                     >
                       <Star className="w-3.5 h-3.5" />
                       <span>Review & Rate Quality (1-5)</span>
@@ -491,16 +488,16 @@ export const DWRModule: React.FC = () => {
       {/* Mode 3: History & Rubric Ratings */}
       {activeTab === 'HISTORY' && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between px-1">
             <h3 className="text-sm font-bold text-[var(--text-primary)]">
               Daily Output History & Rubric Scores
             </h3>
-            <span className="text-xs text-[var(--text-muted)]">Permanent Performer History</span>
+            <span className="text-xs text-[var(--text-muted)]">Permanent Output Archive</span>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-3.5">
             {dwrList.map((dwr) => (
-              <div key={dwr.id} className="ui-surface rounded-2xl p-4 sm:p-5 space-y-3">
+              <div key={dwr.id} className="ui-card-tactile p-5 space-y-3.5">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-bold text-[var(--text-primary)]">{dwr.employeeName}</span>
@@ -508,34 +505,34 @@ export const DWRModule: React.FC = () => {
                     <StatusBadge status={dwr.status} size="xs" />
                   </div>
                   {dwr.supervisorReview && (
-                    <div className="flex items-center gap-1 text-xs font-bold text-[#F59E0B] bg-[var(--warning-bg)] px-2.5 py-1 rounded-lg border border-[var(--warning-border)]">
-                      <Star className="w-3.5 h-3.5 fill-[#F59E0B]" />
+                    <div className="flex items-center gap-1 text-xs font-bold text-[var(--warning-text)] bg-[var(--warning-bg)] px-3 py-1 rounded-full border border-[var(--warning-border)] shadow-xs">
+                      <Star className="w-3.5 h-3.5 fill-current" />
                       <span>Score: {dwr.supervisorReview.qualityScore} / 5</span>
                     </div>
                   )}
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                  <div className="bg-[var(--bg-subtle)] p-3 rounded-xl">
+                  <div className="bg-[var(--bg-subtle)] p-3.5 rounded-2xl">
                     <p className="text-[10px] text-[var(--text-muted)] uppercase font-semibold mb-1">
                       Outputs Delivered
                     </p>
                     {dwr.items.map((it) => (
-                      <p key={it.id} className="text-[var(--text-secondary)]">
+                      <p key={it.id} className="text-[var(--text-secondary)] font-medium">
                         • {it.taskTitle} ({it.quantity} {it.unit})
                       </p>
                     ))}
                   </div>
 
                   {dwr.supervisorReview ? (
-                    <div className="bg-[var(--bg-subtle)] p-3 rounded-xl">
+                    <div className="bg-[var(--bg-subtle)] p-3.5 rounded-2xl">
                       <p className="text-[10px] text-[var(--text-muted)] uppercase font-semibold mb-1">
                         Supervisor Feedback ({dwr.supervisorReview.reviewerName})
                       </p>
                       <p className="text-[var(--text-secondary)] italic">{dwr.supervisorReview.rubricFeedback}</p>
                     </div>
                   ) : (
-                    <div className="bg-[var(--bg-subtle)] p-3 rounded-xl flex items-center justify-center text-[var(--text-muted)] italic">
+                    <div className="bg-[var(--bg-subtle)] p-3.5 rounded-2xl flex items-center justify-center text-[var(--text-muted)] italic">
                       Pending Supervisor Verification
                     </div>
                   )}
@@ -548,14 +545,14 @@ export const DWRModule: React.FC = () => {
 
       {/* Supervisor Review Rubric Modal */}
       {reviewingDWR && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-          <div className="ui-surface-elevated rounded-2xl p-6 max-w-lg w-full shadow-2xl space-y-4 border">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-md animate-fadeIn">
+          <div className="ui-surface-elevated rounded-[24px] p-6 max-w-lg w-full shadow-2xl space-y-4 border border-[var(--border-base)]">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-base font-bold text-[var(--text-primary)]">Rate DWR Quality Rubric (1–5)</h3>
                 <p className="text-xs text-[var(--text-muted)]">Record for {reviewingDWR.employeeName}</p>
               </div>
-              <button onClick={() => setReviewingDWR(null)} className="text-[var(--text-muted)] hover:text-[var(--text-primary)]">
+              <button onClick={() => setReviewingDWR(null)} className="p-1 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-primary)]">
                 ✕
               </button>
             </div>
@@ -571,10 +568,10 @@ export const DWRModule: React.FC = () => {
                     key={s}
                     type="button"
                     onClick={() => setRubricScore(s as any)}
-                    className={`flex-1 py-2.5 rounded-xl font-bold text-xs border flex items-center justify-center gap-1 transition ${
+                    className={`flex-1 py-3 rounded-2xl font-bold text-xs border flex items-center justify-center gap-1.5 transition ${
                       rubricScore === s
-                        ? 'bg-[#F59E0B] text-slate-950 border-transparent shadow'
-                        : 'ui-surface text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]'
+                        ? 'btn-tactile-primary text-white shadow-xs'
+                        : 'btn-tactile-secondary text-[var(--text-secondary)]'
                     }`}
                   >
                     <Star className={`w-3.5 h-3.5 ${rubricScore >= s ? 'fill-current' : ''}`} />
@@ -592,20 +589,20 @@ export const DWRModule: React.FC = () => {
                 rows={3}
                 value={rubricFeedback}
                 onChange={(e) => setRubricFeedback(e.target.value)}
-                className="w-full px-3 py-2 bg-[var(--bg-subtle)] border border-[var(--border-base)] rounded-xl text-xs text-[var(--text-primary)] focus:outline-none focus:border-[#6366F1]"
+                className="w-full px-3 py-2 input-tactile text-xs text-[var(--text-primary)]"
               />
             </div>
 
-            <div className="flex justify-end gap-2 pt-2">
+            <div className="flex justify-end gap-2.5 pt-2">
               <button
                 onClick={() => setReviewingDWR(null)}
-                className="px-4 py-2 rounded-xl ui-surface hover:bg-[var(--bg-hover)] text-xs text-[var(--text-secondary)] font-medium"
+                className="btn-tactile-secondary px-4 py-2.5 text-xs font-medium"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSupervisorVerify}
-                className="px-5 py-2 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white font-bold text-xs transition flex items-center gap-1.5"
+                className="btn-tactile-primary px-5 py-2.5 text-xs font-bold flex items-center gap-1.5"
               >
                 <Check className="w-4 h-4" />
                 <span>Verify & Record Score</span>

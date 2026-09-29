@@ -15,7 +15,7 @@ interface AreaTrendChartProps {
   height?: number;
   valuePrefix?: string;
   valueSuffix?: string;
-  color?: string; // e.g. '#6366F1'
+  color?: string; // e.g. '#7D9B91' (Soft Sage)
   secondaryColor?: string;
 }
 
@@ -24,8 +24,8 @@ export const AreaTrendChart: React.FC<AreaTrendChartProps> = ({
   height = 180,
   valuePrefix = '',
   valueSuffix = '',
-  color = '#6366F1',
-  secondaryColor = '#06B6D4'
+  color = '#7D9B91',
+  secondaryColor = '#8299A2'
 }) => {
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 
@@ -61,7 +61,7 @@ export const AreaTrendChart: React.FC<AreaTrendChartProps> = ({
       >
         <defs>
           <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor={color} stopOpacity="0.25" />
+            <stop offset="0%" stopColor={color} stopOpacity="0.3" />
             <stop offset="100%" stopColor={color} stopOpacity="0.0" />
           </linearGradient>
         </defs>
@@ -122,8 +122,8 @@ export const AreaTrendChart: React.FC<AreaTrendChartProps> = ({
               <circle
                 cx={cx}
                 cy={cy}
-                r={isHovered ? '5' : '3.5'}
-                fill="var(--bg-surface)"
+                r={isHovered ? '5.5' : '3.5'}
+                fill="var(--bg-elevated)"
                 stroke={color}
                 strokeWidth={isHovered ? '3' : '2'}
                 className="transition-all duration-150"
@@ -149,7 +149,7 @@ export const AreaTrendChart: React.FC<AreaTrendChartProps> = ({
       {/* Interactive Tooltip Callout */}
       {hoverIndex !== null && (
         <div
-          className="absolute z-10 ui-surface rounded-xl px-3 py-2 text-xs font-semibold shadow-xl border pointer-events-none transform -translate-x-1/2 -translate-y-full -top-1"
+          className="absolute z-10 ui-surface-elevated rounded-2xl px-3 py-2 text-xs font-semibold shadow-xl border border-[var(--border-base)] pointer-events-none transform -translate-x-1/2 -translate-y-full -top-1"
           style={{ left: `${(getX(hoverIndex) / width) * 100}%` }}
         >
           <div className="text-[10px] text-[var(--text-muted)]">{data[hoverIndex].label}</div>
@@ -159,7 +159,7 @@ export const AreaTrendChart: React.FC<AreaTrendChartProps> = ({
             {valueSuffix}
           </div>
           {data[hoverIndex].secondaryValue !== undefined && (
-            <div className="text-[10px] text-[var(--info-text)]">
+            <div className="text-[10px] text-[var(--secondary-text)]">
               Target: {valuePrefix}
               {data[hoverIndex].secondaryValue?.toLocaleString()}
               {valueSuffix}
@@ -205,11 +205,11 @@ export const BarComparisonChart: React.FC<BarComparisonChartProps> = ({
       {/* Legend */}
       <div className="flex items-center justify-end gap-4 text-xs">
         <div className="flex items-center gap-1.5 text-[var(--text-secondary)]">
-          <span className="w-2.5 h-2.5 rounded-sm bg-[#6366F1]" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[var(--primary-500)] shadow-xs" />
           <span>{series1Name}</span>
         </div>
         <div className="flex items-center gap-1.5 text-[var(--text-secondary)]">
-          <span className="w-2.5 h-2.5 rounded-sm bg-[#F43F5E]" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[var(--danger-dot)] shadow-xs" />
           <span>{series2Name}</span>
         </div>
       </div>
@@ -222,23 +222,23 @@ export const BarComparisonChart: React.FC<BarComparisonChartProps> = ({
 
           return (
             <div key={i} className="flex-1 flex flex-col items-center h-full justify-end group">
-              <div className="w-full flex items-end justify-center gap-1.5 h-full max-w-[56px]">
+              <div className="w-full flex items-end justify-center gap-2 h-full max-w-[56px]">
                 {/* Series 1 Bar */}
                 <div
-                  className="flex-1 bg-[#6366F1] hover:brightness-110 rounded-t-md transition-all duration-300 relative group/bar"
+                  className="flex-1 bg-[var(--primary-500)] hover:brightness-110 rounded-t-xl transition-all duration-300 relative group/bar shadow-xs"
                   style={{ height: `${Math.max(h1, 6)}%` }}
                 >
-                  <div className="absolute -top-7 left-1/2 -translate-x-1/2 opacity-0 group-hover/bar:opacity-100 transition-opacity bg-[var(--bg-elevated)] border text-[var(--text-primary)] text-[10px] font-bold px-1.5 py-0.5 rounded shadow whitespace-nowrap z-20 pointer-events-none">
+                  <div className="absolute -top-7 left-1/2 -translate-x-1/2 opacity-0 group-hover/bar:opacity-100 transition-opacity bg-[var(--bg-elevated)] border border-[var(--border-base)] text-[var(--text-primary)] text-[10px] font-bold px-2 py-0.5 rounded-xl shadow-lg whitespace-nowrap z-20 pointer-events-none">
                     {valuePrefix}{item.series1}{valueSuffix}
                   </div>
                 </div>
 
                 {/* Series 2 Bar */}
                 <div
-                  className="flex-1 bg-[#F43F5E] hover:brightness-110 rounded-t-md transition-all duration-300 relative group/bar"
+                  className="flex-1 bg-[var(--danger-dot)] hover:brightness-110 rounded-t-xl transition-all duration-300 relative group/bar shadow-xs"
                   style={{ height: `${Math.max(h2, 6)}%` }}
                 >
-                  <div className="absolute -top-7 left-1/2 -translate-x-1/2 opacity-0 group-hover/bar:opacity-100 transition-opacity bg-[var(--bg-elevated)] border text-[var(--text-primary)] text-[10px] font-bold px-1.5 py-0.5 rounded shadow whitespace-nowrap z-20 pointer-events-none">
+                  <div className="absolute -top-7 left-1/2 -translate-x-1/2 opacity-0 group-hover/bar:opacity-100 transition-opacity bg-[var(--bg-elevated)] border border-[var(--border-base)] text-[var(--text-primary)] text-[10px] font-bold px-2 py-0.5 rounded-xl shadow-lg whitespace-nowrap z-20 pointer-events-none">
                     {valuePrefix}{item.series2}{valueSuffix}
                   </div>
                 </div>
@@ -275,7 +275,7 @@ export const DonutMetric: React.FC<DonutMetricProps> = ({
   strokeWidth = 10,
   label,
   sublabel,
-  color = '#6366F1'
+  color = '#7D9B91'
 }) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;

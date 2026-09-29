@@ -12,7 +12,7 @@ interface KPICardProps {
   subtitle?: string;
   badge?: string;
   onClick?: () => void;
-  accentColor?: 'indigo' | 'emerald' | 'amber' | 'cyan' | 'rose';
+  surfaceVariant?: 'sage' | 'blue-grey' | 'lavender' | 'warm' | 'default';
 }
 
 export const KPICard: React.FC<KPICardProps> = ({
@@ -25,22 +25,31 @@ export const KPICard: React.FC<KPICardProps> = ({
   subtitle,
   badge,
   onClick,
-  accentColor = 'indigo'
+  surfaceVariant = 'default'
 }) => {
-  const accentClasses = {
-    indigo: 'text-[#6366F1] bg-[var(--primary-bg)] border-[var(--primary-border)]',
-    emerald: 'text-[#10B981] bg-[var(--success-bg)] border-[var(--success-border)]',
-    amber: 'text-[#F59E0B] bg-[var(--warning-bg)] border-[var(--warning-border)]',
-    cyan: 'text-[#06B6D4] bg-[var(--info-bg)] border-[var(--info-border)]',
-    rose: 'text-[#EF4444] bg-[var(--danger-bg)] border-[var(--danger-border)]'
+  const variantStyles = {
+    default: 'ui-card-tactile',
+    sage: 'ui-card-tactile bg-[var(--primary-bg)] border-[var(--primary-border)]',
+    'blue-grey': 'ui-card-tactile bg-[var(--secondary-bg)] border-[var(--secondary-border)]',
+    lavender: 'ui-card-tactile bg-[var(--accent-bg)] border-[var(--accent-border)]',
+    warm: 'ui-card-tactile bg-[var(--warning-bg)] border-[var(--warning-border)]'
+  };
+
+  const iconStyles = {
+    default: 'bg-[var(--bg-elevated)] text-[var(--primary-text)] border-[var(--border-base)]',
+    sage: 'bg-[var(--bg-elevated)] text-[var(--primary-text)] border-[var(--primary-border)]',
+    'blue-grey': 'bg-[var(--bg-elevated)] text-[var(--secondary-text)] border-[var(--secondary-border)]',
+    lavender: 'bg-[var(--bg-elevated)] text-[var(--accent-text)] border-[var(--accent-border)]',
+    warm: 'bg-[var(--bg-elevated)] text-[var(--warning-text)] border-[var(--warning-border)]'
   };
 
   return (
     <div
       onClick={onClick}
       className={clsx(
-        'ui-surface rounded-2xl p-4 sm:p-5 relative flex flex-col justify-between select-none',
-        onClick ? 'ui-card-interactive cursor-pointer' : ''
+        variantStyles[surfaceVariant],
+        'p-4 sm:p-5 relative flex flex-col justify-between select-none',
+        onClick ? 'cursor-pointer' : ''
       )}
     >
       {/* Top Header */}
@@ -50,7 +59,7 @@ export const KPICard: React.FC<KPICardProps> = ({
             {title}
           </p>
           {badge && (
-            <span className="inline-block text-[10px] font-bold px-1.5 py-0.2 rounded bg-[var(--bg-subtle)] text-[var(--text-secondary)] border border-[var(--border-subtle)]">
+            <span className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[var(--bg-elevated)] text-[var(--text-secondary)] border border-[var(--border-subtle)] shadow-xs">
               {badge}
             </span>
           )}
@@ -59,8 +68,8 @@ export const KPICard: React.FC<KPICardProps> = ({
         {Icon && (
           <div
             className={clsx(
-              'w-8 h-8 rounded-xl border flex items-center justify-center shrink-0',
-              accentClasses[accentColor]
+              'w-9 h-9 rounded-xl border flex items-center justify-center shrink-0 shadow-sm',
+              iconStyles[surfaceVariant]
             )}
           >
             <Icon className="w-4 h-4" />
@@ -69,23 +78,23 @@ export const KPICard: React.FC<KPICardProps> = ({
       </div>
 
       {/* Main Metric Value */}
-      <div className="space-y-1">
+      <div className="space-y-1.5">
         <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--text-primary)]">
           {value}
         </h3>
 
         {/* Change / Trend indicator */}
-        <div className="flex flex-wrap items-center gap-1.5 text-xs">
+        <div className="flex flex-wrap items-center gap-2 text-xs">
           {change && (
             <span
               className={clsx(
-                'inline-flex items-center gap-0.5 font-bold px-1.5 py-0.5 rounded-md text-[11px]',
+                'inline-flex items-center gap-0.5 font-bold px-2 py-0.5 rounded-full text-[11px] shadow-xs',
                 isPositive
-                  ? 'bg-[var(--success-bg)] text-[var(--success-text)]'
-                  : 'bg-[var(--danger-bg)] text-[var(--danger-text)]'
+                  ? 'bg-[var(--success-bg)] text-[var(--success-text)] border border-[var(--success-border)]'
+                  : 'bg-[var(--danger-bg)] text-[var(--danger-text)] border border-[var(--danger-border)]'
               )}
             >
-              {isPositive ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
+              {isPositive ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ArrowDownRight className="w-3.5 h-3.5" />}
               {change}
             </span>
           )}
