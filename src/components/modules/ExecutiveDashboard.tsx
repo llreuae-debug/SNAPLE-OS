@@ -24,6 +24,7 @@ import {
 import { KPICard } from '../common/KPICard';
 import { StatusBadge } from '../common/StatusBadge';
 import { AreaTrendChart, BarComparisonChart, DonutMetric } from '../common/ChartComponents';
+import { QuantumFlux } from '../ui/quantum-flux';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
 import { mockCompanies, mockAIRunRecommendations } from '../../db/mockData';
@@ -45,6 +46,7 @@ export const ExecutiveDashboard: React.FC<{ onNavigate: (tab: string) => void }>
   const [filterSeverity, setFilterSeverity] = useState<'ALL' | 'CRITICAL' | 'WARNING'>('ALL');
   const [exportMessage, setExportMessage] = useState<string | null>(null);
   const [timeRange, setTimeRange] = useState<'Today' | '7D' | '30D'>('Today');
+  const [showHeroMesh, setShowHeroMesh] = useState(true);
 
   const exceptionRules: ExceptionRuleItem[] = [
     {
@@ -119,6 +121,29 @@ export const ExecutiveDashboard: React.FC<{ onNavigate: (tab: string) => void }>
 
   return (
     <div className="space-y-6 animate-fadeIn pb-6">
+      {/* 0. Executive Quantum Flux Mesh Hero */}
+      {showHeroMesh && (
+        <div className="relative">
+          <QuantumFlux
+            title="SNAPLE-OS"
+            subtitle="INTELLIGENT GROUP OPERATING SYSTEM"
+            description="Unified governance, daily measurable output, commercial pipeline & AI orchestration across DAGMAR, Pixel Park & Novelty Condos."
+            primaryActionLabel="Explore Projects (MB)"
+            secondaryActionLabel="Ask SNAPLE AI"
+            onActionClick={(action) => onNavigate(action === 'dashboard' ? 'projects' : 'ai')}
+            height="min-h-[300px] sm:min-h-[340px]"
+            density="medium"
+          />
+          <button
+            onClick={() => setShowHeroMesh(false)}
+            className="absolute top-4 right-4 z-20 px-2.5 py-1 rounded-full bg-[var(--surface-elevated)]/80 backdrop-blur-md border border-[var(--border-base)] text-[10px] font-mono text-[var(--text-muted)] hover:text-[var(--text-primary)] transition shadow-xs"
+            title="Minimize Hero Banner"
+          >
+            ✕ Minimize
+          </button>
+        </div>
+      )}
+
       {/* 1. Header with Executive Greeting & Context Controls */}
       <div className="ui-surface-elevated p-6 rounded-[24px] flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="space-y-1">
@@ -127,6 +152,14 @@ export const ExecutiveDashboard: React.FC<{ onNavigate: (tab: string) => void }>
             <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
               {activeCompanyId === 'ALL' ? 'Group Live Governance' : `${currentCompany?.name} Scope`}
             </span>
+            {!showHeroMesh && (
+              <button
+                onClick={() => setShowHeroMesh(true)}
+                className="ml-2 text-[10px] font-bold text-[var(--brand-primary)] hover:underline flex items-center gap-1"
+              >
+                <Sparkles className="w-3 h-3" /> Show Quantum Mesh
+              </button>
+            )}
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--text-primary)]">
             Good Morning, {currentUser.name.split(' ')[0]}

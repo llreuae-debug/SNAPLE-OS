@@ -11,6 +11,7 @@ import {
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
 import { StatusBadge } from '../common/StatusBadge';
+import { QuantumFlux } from '../ui/quantum-flux';
 import {
   mockAIAgents,
   mockAIRunRecommendations
@@ -91,12 +92,26 @@ export const AIAgentCenter: React.FC = () => {
 
   return (
     <div className="space-y-6 animate-fadeIn pb-6">
+      {/* 0. SNAPLE AI Quantum Flux Hero */}
+      <QuantumFlux
+        title="SNAPLE AI Workspace"
+        subtitle="PERMISSION-AWARE INTELLIGENCE SENTINEL"
+        description="Ask about authorised data across DWR daily outputs, MB registers, and active sales pipelines. AI recommendations are strictly non-binding and require human approval."
+        primaryActionLabel="Query Lead QS Agent"
+        secondaryActionLabel="Review Pending Actions"
+        onActionClick={(action) => {
+          if (action === 'dashboard') setSelectedAgent(mockAIAgents[0]);
+        }}
+        height="min-h-[260px] sm:min-h-[290px]"
+        density="low"
+      />
+
       {/* Header Banner */}
       <div className="ui-surface-elevated p-6 rounded-[24px] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <Sparkles className="w-5 h-5 text-[var(--accent-500)]" />
-            <h1 className="text-xl font-extrabold tracking-tight text-[var(--text-primary)]">SNAPLE AI Intelligence Sentinel</h1>
+            <h1 className="text-xl font-extrabold tracking-tight text-[var(--text-primary)]">Domain Intelligence Agents</h1>
           </div>
           <p className="text-xs text-[var(--text-secondary)]">
             AI operates strictly as a permission-constrained recommendation assistant. All actions require human authorization.
